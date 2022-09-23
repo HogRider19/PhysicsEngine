@@ -56,6 +56,38 @@ class RayCast:
 
 
 
+class CoordinateSystemRotation:
+
+    def __init__(self, ang: float) -> None:
+        self.ang = ang
+
+    def get_transformed_point(self, point: Point) -> Point:
+        """
+        x' = x * cos(a) + y * sin(a)
+        y' = y * cos(a) - x * sin(a)
+        """
+
+        transformed_point = Point(
+            x = point.x * math.cos(self.ang) + point.y * math.sin(self.ang),
+            y = point.y * math.cos(self.ang) - point.x * math.sin(self.ang)
+        )
+        return transformed_point
+
+    def get_starting_point(self, point: Point) -> Point:
+        """
+        x = x' * cos(a) - y' * sin(a)
+        y = x' * sin(a) + y' * cos(a)
+        """
+
+        transformed_point = Point(
+            x = point.x * math.cos(self.ang) - point.y * math.sin(self.ang),
+            y = point.x * math.sin(self.ang) + point.y * math.cos(self.ang)
+        )
+        return transformed_point
+        
+
+
+
 class MathUtils:
 
     @staticmethod

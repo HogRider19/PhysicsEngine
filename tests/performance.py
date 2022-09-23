@@ -1,3 +1,4 @@
+import math
 from Basicobjects.physicsObject import PhysicsObject
 from MathОperators.ray import Ray
 from MathОperators.point import Point
@@ -45,6 +46,13 @@ def distance_circle_to_circle_test(values):
     ).get_distance()
 
 
+@operations_per_second
+def rect_component_lines(values):
+    rect = Rect(values(1,5), values(1,5), 
+            position=Point(values(), values()), ang=values(0, math.pi*2))
+    return rect.get_component_lines()
+
+
 
 def get_report():
     manager = ReportManager()
@@ -55,6 +63,7 @@ def get_report():
         distance_point_to_line_test,
         ray_to_line_test,
         distance_circle_to_circle_test,
+        rect_component_lines,
     )
 
     return manager.get_report()

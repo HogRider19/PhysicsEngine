@@ -10,12 +10,12 @@ from Objects.circle import Circle
 from Objects.rect import Rect
 
 
-dist = DistanceBetweenObjects(
-    Circle(1, position=Point(0,0)),
-    Circle(1, position=Point(5,0))
-).get_distance()
+rect = Rect(2, 4, position=Point(0,0))
 
-print(dist)
+line_list = rect.get_component_lines()
+
+for i in line_list:
+    print(f"{i.point1.x}:{i.point1.y}    {i.point2.x}:{i.point2.y}")
 
 
 

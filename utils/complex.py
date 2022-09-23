@@ -15,8 +15,20 @@ class DistanceBetweenObjects:
 
         if isinstance(self.object1, Circle) and  isinstance(self.object2, Circle):
             dist = self._dist_circle_circle()
-        elif isinstance(self.object1, Circle) and isinstance(self.object2, Rect):
-            cross_point = self._rc_to_circle()
+
+        elif isinstance(self.object1, Rect) and  isinstance(self.object2, Rect):
+            dist = self._dist_rect_rect()
+
+        elif (isinstance(self.object1, Circle) and
+                    isinstance(self.object2, Rect)) or (isinstance(self.object2, Circle) and
+                        isinstance(self.object1, Rect)):
+
+            if not isinstance(self.object1, Circle):
+                # Меняем объксты местами если первый не Circle
+                self.object1, self.object2 = self.object2, self.object1
+
+            dist = self._dist_circle_rect()
+        
         else:
             raise "Invalid object"
 
