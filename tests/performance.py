@@ -40,9 +40,10 @@ def ray_to_line_test(values):
 @operations_per_second
 def distance_circle_to_circle_test(values):
     return DistanceBetweenObjects(
-        Circle(values(), position=Point(values(),values())),
-        Circle(values(), position=Point(values(),values()))
+        Circle(values(1, 3), position=Point(values(),values())),
+        Circle(values(1, 3), position=Point(values(),values()))
     ).get_distance()
+
 
 
 def get_report():

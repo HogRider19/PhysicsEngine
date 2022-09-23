@@ -12,7 +12,9 @@ def operations_per_second(inner_fun):
         result = []
 
         while time.time() - first_time < 1:
+            
             result.append(inner_fun(ValueGenerator(-30, 30)))
+
 
         return round(len(result)/1000)
 
@@ -25,8 +27,12 @@ class ValueGenerator:
         self.border1 = border1
         self.border2 = border2
 
-    def __call__(self):
-        return random.random() * (self.border2 - self.border1) + self.border1
+    def __call__(self, br1 = None, br2 = None):
+        if br1 is None or br2 is None: 
+            border1, border2 = self.border1, self.border2
+        else:
+            border1, border2 = br1, br2
+        return random.random() * (border2 - border1) + border1
 
 
 class ReportManager:
@@ -38,11 +44,17 @@ class ReportManager:
         self.tests = tests
 
     def get_report(self) -> str:
-        report = '\n'
+        report = []
         for test in self.tests:
-            report += f'{test.__name__}: {test()}\n'
-        
-        return report
+            report.append([test(), test.__name__])
+
+        report.sort(reverse=True)
+
+        report_str = '\n'
+        for data in report:
+            report_str += f'{data[1]}{"."*(60-len(data[1]))}{data[0]}\n'
+
+        return report_str
 
 
 
