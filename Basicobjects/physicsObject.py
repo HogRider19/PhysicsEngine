@@ -13,7 +13,6 @@ class PhysicsObject:
         self.position = position 
         self.material = material
         self.ang = ang
-        self.material = Material()
         self.static = static
         self.mas = mas 
         self.moment_inertia = moment_inertia

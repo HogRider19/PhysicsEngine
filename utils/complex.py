@@ -56,4 +56,11 @@ class DistanceBetweenObjects:
         return min(dists)
 
     def _dist_rect_rect(self) -> float: 
-        pass
+        dists = []
+        for line1 in self.object1.get_component_lines():
+            for line2 in self.object2.get_component_lines():
+                dist = MathUtils.distance_line_to_line(line1, line2)
+                dist = 0 if dist < 0 else dist
+                dists.append(dist)
+        
+        return min(dists)
