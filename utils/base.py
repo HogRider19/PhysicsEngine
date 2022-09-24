@@ -116,29 +116,10 @@ class MathUtils:
 
     @staticmethod
     def distance_line_to_line(line1: Line, line2: Line) -> float:
-        """
-
-            def ras (x1, y1, x2, y2, x3, y3):
-            ## Если отрезок вертикальный - меняем местами координаты каждой точки.
-            if x1==x2:
-                x1, y1 = y1, x1
-                x2, y2 = y2, x2
-                x3, y3 = y3, x3
-            k=(y1-y2)/(x1-x2) ## Ищем коэффициенты уравнения прямой, которому принадлежит данный отрезок.
-            d=y1-k*x1
-            xz=(x3*x2-x3*x1+y2*y3-y1*y3+y1*d-y2*d)/(k*y2-k*y1+x2-x1)
-            dl=-1
-            if ( xz<=x2 and xz>=x1 ) or ( xz<=x1 and xz>=x2 ):
-                dl=math.sqrt((x3-xz)*(x3-xz)+(y3-xz*k-d)*(y3-xz*k-d)) ## Проверим лежит ли основание высоты на отрезке.
-            return dl
-
 
             ## Вводим параметры отрезков
-            # xa, ya, xb, yb = [1, 1, 2, 2]
-            # xc, yc, xd, yd = [2, 1, 3, 0]
-
-            xa, ya, xb, yb = [int(s) for s in input().split()]
-            xc, yc, xd, yd = [int(s) for s in input().split()]
+            xa, ya, xb, yb = line1.point1.x, line1.point1.y, line1.point2.x, line1.point2.y
+            xc, yc, xd, yd = line2.point1.x, line2.point1.y, line2.point2.x, line2.point2.y
 
             min=-1
             t=-2
@@ -149,22 +130,23 @@ class MathUtils:
             o2=(-yd+yc)*(xc-xa)-(-xd+xc)*(yc-ya)
 
             if o!=0:
-            t=o1/o
-            s=o2/o
+                t=o1/o
+                s=o2/o
 
             if (t>=0 and s>=0) and (t<=1 and s<=1):
-            min=0 ## Проверим пересекаются ли отрезки.
+                min=0 ## Проверим пересекаются ли отрезки.
             else: 
             ## Найдём наименьшую высоту опущенную из конца одного отрезка на другой.
-            dl1=ras(xa,ya,xb,yb,xc,yc)
-            min=dl1
-            dl2=ras(xa,ya,xb,yb,xd,yd)
+                dl1 = MathUtils.distance_point_to_line(Point(xc,yc), Line(Point(xa,ya), Point(xb,yb)))
+                min = dl1
+            dl2 = MathUtils.distance_point_to_line(Point(xd,yd), Line(Point(xa,ya), Point(xb,yb)))
+
             if ( dl2<min and dl2!=-1 ) or min==-1 :
                 min=dl2
-            dl3=ras(xc,yc,xd,yd,xa,ya)
+            dl3 = MathUtils.distance_point_to_line(Point(xa,ya), Line(Point(xc,yc), Point(xd,yd)))
             if ( dl3<min and dl3!=-1 ) or min==-1 :
                 min=dl3
-            dl4=ras(xc,yc,xd,yd,xb,yb)
+            dl4=MathUtils.distance_point_to_line(Point(xb,yb), Line(Point(xc,yc), Point(xd,yd)))
             if ( dl4<min and dl4!=-1) or min==-1 :
                 min=dl4
             if min==-1 :
@@ -173,16 +155,15 @@ class MathUtils:
                 min=dl1
                 dl2=math.sqrt((xb-xd)*(xb-xd)+(yb-yd)*(yb-yd))
                 if dl2<min :
-                min=dl2
+                    min=dl2
                 dl3=math.sqrt((xb-xc)*(xb-xc)+(yb-yc)*(yb-yc))
                 if dl3<min :
-                min=dl3
+                    min=dl3
                 dl4=math.sqrt((xa-xd)*(xa-xd)+(ya-yd)*(ya-yd))
                 if dl4<min :
-                min=dl4
+                    min=dl4
 
-            print (min)
-        """
+            return min
 
     @staticmethod
     def ray_to_line(ray: Ray) -> Line: 

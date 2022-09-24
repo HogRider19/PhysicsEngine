@@ -61,6 +61,13 @@ def distance_circle_to_rect_test(values):
     ).get_distance()
 
 
+@operations_per_second
+def distance_line_to_line_test(values):
+    line1 = Line(Point(values(),values()), Point(values(),values()))
+    line2 = Line(Point(values(),values()), Point(values(),values()))
+    return MathUtils.distance_line_to_line(line1, line2)
+
+
 
 def get_report():
     manager = ReportManager()
@@ -73,6 +80,7 @@ def get_report():
         distance_circle_to_circle_test,
         rect_component_lines,
         distance_circle_to_rect_test,
+        distance_line_to_line_test
     )
 
     return manager.get_report()
