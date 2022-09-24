@@ -43,7 +43,17 @@ class DistanceBetweenObjects:
         return dist
 
     def _dist_circle_rect(self) -> float: 
-        pass
+        circle = self.object1
+        rect = self.object2
+        
+        dists = []
+        for line in rect.get_component_lines():
+            dist = MathUtils.distance_point_to_line(circle.position,
+                                                     line) - circle.radius
+            dist = 0 if dist < 0 else dist
+            dists.append(dist)
+
+        return min(dists)
 
     def _dist_rect_rect(self) -> float: 
         pass

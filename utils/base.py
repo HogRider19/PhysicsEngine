@@ -117,10 +117,6 @@ class MathUtils:
     @staticmethod
     def distance_line_to_line(line1: Line, line2: Line) -> float:
         """
-            #!/usr/bin/env python3
-            # -*- coding: utf-8 -*- 
-
-            import math
 
             def ras (x1, y1, x2, y2, x3, y3):
             ## Если отрезок вертикальный - меняем местами координаты каждой точки.

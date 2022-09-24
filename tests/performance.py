@@ -53,6 +53,14 @@ def rect_component_lines(values):
     return rect.get_component_lines()
 
 
+@operations_per_second
+def distance_circle_to_rect_test(values):
+    return DistanceBetweenObjects(
+        Circle(values(1, 3), position=Point(values(),values())),
+        Rect(values(1, 5), values(1, 5), position=Point(values(),values()), ang=values(0, math.pi*2))
+    ).get_distance()
+
+
 
 def get_report():
     manager = ReportManager()
@@ -64,6 +72,7 @@ def get_report():
         ray_to_line_test,
         distance_circle_to_circle_test,
         rect_component_lines,
+        distance_circle_to_rect_test,
     )
 
     return manager.get_report()
