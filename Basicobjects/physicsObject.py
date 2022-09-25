@@ -5,6 +5,9 @@ from .material import Material
 import math
 
 
+dt = 1/100
+
+
 class PhysicsObject:
 
     def __init__(self, position = Point(0,0), material = Material(), 
@@ -23,10 +26,18 @@ class PhysicsObject:
         self.collision_list = []
 
     def add_force(self, force: Vector) -> None:
-        self.force_list.append(force)
+        self.force_list.append(Vector(force.x * dt, force.y * dt))
 
     def add_moment(self, moment: float) -> None:
-        self.moment_list.append(moment)
+        self.moment_list.append(moment*dt)
+
+    def add_relative_force(self, force: Vector, point: Point):
+        dx = point.x - self.position.x
+        dy = point.y - self.position.y
+        moment = (dx * force.y + dy * force.x)/1000
+        print(moment)
+        self.add_moment(moment)
+        self.add_force(force)
 
     def _update_force(self):
         res_force = Vector(0,0)

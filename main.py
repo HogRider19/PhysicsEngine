@@ -5,17 +5,38 @@ from MathОperators.vector import Vector
 from MathОperators.line import Line
 from utils.base import MathUtils, RayCast
 from tests.performance import get_report
-from utils.complex import DistanceBetweenObjects
+from utils.complex import DistanceBetweenObjects, CollisionPoint
 from Objects.circle import Circle
 from Objects.rect import Rect
+import matplotlib.pyplot as plt
+import time
 
 
-line1 = Line(Point(0,0), Point(0,1))
-line2 = Line(Point(1,0), Point(-1,0))
 
-res = MathUtils.distance_line_to_line(line1, line2)
+first_time = time.time()
 
-print(res)
+circle1 = Circle(1, position=Point(0,0))
+circle2 = Circle(1, position=Point(10,0))
 
+circle2.add_force(Vector(-0.17, 0))
+
+result = []
+
+while time.time() - first_time < 1:
+    dist = DistanceBetweenObjects(circle2, circle1).get_distance()
+
+    #result.append(dist)
+
+    circle1.update()
+    circle2.update()
+
+    if dist <= 0:
+        p = CollisionPoint(circle2, circle1).get_cross_point()
+        result.append(p.x)
+
+
+plt.plot(result)
+plt.grid(True)
+plt.show()
 
 
