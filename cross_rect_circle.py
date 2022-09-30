@@ -59,7 +59,7 @@ circle = Circle(20, position=Point(700, 330))
 circle.veloсity = Vector(-1,0)
 
 
-space = Space(1000, 1000, 0)
+space = Space(1200, 700, 1)
 simManager = Simulation(space)
 simManager.set_objects(
     rect,

@@ -29,12 +29,12 @@ class PhysicsObject:
         self.force_list.append(Vector(force.x * dt, force.y * dt))
 
     def add_moment(self, moment: float) -> None:
-        self.moment_list.append(moment*dt)
+        self.moment_list.append(-moment*dt)
 
     def add_relative_force(self, force: Vector, point: Point):
         dx = point.x - self.position.x
         dy = point.y - self.position.y
-        moment = (dx * force.y + dy * force.x)/1000
+        moment = (dx * force.y + dy * force.x)
         self.add_moment(moment)
         self.add_force(force)
 

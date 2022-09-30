@@ -24,6 +24,7 @@ class Simulation:
         
         self._colision_update()
         self._gravity_update()
+        self._replace_object_in_border()
         self._update_objects()
 
     def _gravity_update(self) -> None:
@@ -37,9 +38,22 @@ class Simulation:
                     colision_point = CollisionPoint(object1, object2).get_cross_point()
 
                     if colision_point:
+
                         object1.add_relative_force(object2.veloсity, colision_point)
                         #object2.add_relative_force(Vector(-object2.veloсity.x, -object2.veloсity.y), colision_point)
                         object2.veloсity = Vector(-object2.veloсity.x, -object2.veloсity.y)
+
+    def _replace_object_in_border(self):
+        for object in self.objects:
+            if object.position.x < 0:
+                object.position.x = self.space.height - 1
+            elif object.position.x > self.space.height:
+                object.position.x = 0
+
+            if object.position.y < 0:
+                object.position.y = self.space.width - 1
+            elif object.position.y > self.space.width:
+                object.position.y = 0 
 
     def _update_objects(self):
         for object in self.objects:
