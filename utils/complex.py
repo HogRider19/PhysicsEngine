@@ -108,7 +108,23 @@ class CollisionPoint:
         return cross_point
 
     def _cross_circle_rect(self) -> Point: 
-        pass
+        """
+        1) Получаем точки rect
+        2) Поворот системы координат
+        3) a = arctg(dy/dx)
+        4) a1 = arctg(h/w)
+        5) lineNum = 
+                1: -a1 < a < a1
+                2: a1 < a < pi - a1
+                3: pi - a1 < a < pi + a1
+                4: pi+a1 < a < 2pi - a1
+        6) d = sqrt(dx**2 + dy**2)
+        7) d' = dist(Ld and lineNum)
+        8) if d <= d':
+            return Ld U lineNum
+            else:
+                None
+        """
 
     def _cross_rect_rect(self) -> Point: 
         pass 

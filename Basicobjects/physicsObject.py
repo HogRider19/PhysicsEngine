@@ -35,7 +35,6 @@ class PhysicsObject:
         dx = point.x - self.position.x
         dy = point.y - self.position.y
         moment = (dx * force.y + dy * force.x)/1000
-        print(moment)
         self.add_moment(moment)
         self.add_force(force)
 

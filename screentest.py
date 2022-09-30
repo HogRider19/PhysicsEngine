@@ -38,7 +38,6 @@ while True:
             exit()
 
     rect.update()
-    print(rect.ang_veloсity)
     draw_rect(rect, surface)
 
 
