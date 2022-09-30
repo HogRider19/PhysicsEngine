@@ -84,6 +84,14 @@ def cross_point_circle_circle_test(values):
     ).get_cross_point()
 
 
+@operations_per_second
+def cross_point_rect_circle_test(values):
+    return CollisionPoint(
+        Rect(values(1, 4), values(1, 4), position=Point(values(),values())),
+        Circle(values(1, 4), position=Point(values(),values())),
+    ).get_cross_point()
+
+
 def get_report():
     manager = ReportManager()
     
@@ -98,6 +106,7 @@ def get_report():
         distance_line_to_line_test,
         distance_rect_to_rect_test,
         cross_point_circle_circle_test,
+        cross_point_rect_circle_test,
     )
 
     return manager.get_report()

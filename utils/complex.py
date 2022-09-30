@@ -129,8 +129,8 @@ class CollisionPoint:
             else:
                 None
         """
-        rect = self.object1
-        circle = self.object2
+        rect = self.object2
+        circle = self.object1
 
         lines = rect.get_component_lines()
 
@@ -143,10 +143,13 @@ class CollisionPoint:
         dx = circle_pos_r.x - rect_pos_r.x
         dy = circle_pos_r.y - rect_pos_r.y
 
+        if dx == 0:
+            dx = 0.001
         alpha = math.atan(dy/dx)
         alpha1 = math.atan(rect.height/rect.width)
 
         lineNum = 0
+        """
         if -alpha1 <= alpha <= alpha1:
             lineNum = 2
         elif alpha1 <= alpha <= math.pi - alpha1:
@@ -155,17 +158,44 @@ class CollisionPoint:
             lineNum = 0
         elif math.pi + alpha1 <= alpha <= 2*math.pi - alpha1:
             lineNum = 1
+        """
 
-        d = math.sqrt(dx**2 + dy**2)
-        d1 = MathUtils.distance_point_to_line(rect_pos_r, lines_r[lineNum])
+        for index, line in enumerate(lines_r):
+            ray_rect_circle = Ray(rect_pos_r, Vector(dx,dy))
+            p = RayCast(ray_rect_circle, line).get_cross_point()
+            if p:
+                lineNum = index
+        
+        d = math.sqrt(dx**2 + dy**2) - circle.radius
+        ray_rect_circle = Ray(rect_pos_r, Vector(dx,dy))
+        cross_point_r = RayCast(ray_rect_circle, lines_r[lineNum]).get_cross_point()
+        d1 = MathUtils.distance_point_to_point(rect_pos_r, cross_point_r)
 
         if d <= d1:
-            ray_rect_circle = Ray(rect_pos_r, Vector(dx,dy))
-            cross_point_r = RayCast(ray_rect_circle, lines_r[lineNum]).get_cross_point()
             cross_point = rotateManager.get_starting_point(cross_point_r)
-            return cross_point
+            #return cross_point
 
-        return None
+            return {
+                'cross_point': cross_point,
+                'alpha': alpha,
+                'alpha1':alpha1,
+                'd' : d,
+                'd1': d1,
+                'line_c_r': rotateManager.get_starting_line(MathUtils.ray_to_line(ray_rect_circle)),
+                'lineNum': lineNum
+            }
+
+        #return None
+
+        return{
+            'cross_point': None,
+            'alpha': alpha,
+            'alpha1':alpha1,
+            'd' : d,
+            'd1': d1,
+            'line_c_r': rotateManager.get_starting_line(MathUtils.ray_to_line(Ray(rect_pos_r, Vector(dx,dy)))),
+            'lineNum': lineNum
+        }
 
 
     def _cross_rect_rect(self) -> Point: 
