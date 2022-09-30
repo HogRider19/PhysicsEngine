@@ -18,3 +18,6 @@ class Line:
 
     def get_norm_vec(self):
         return self.get_guiding_vec().rotate(math.pi/2)
+
+    def get_len(self):
+        return math.sqrt((self.point1.x-self.point2.x)**2 + (self.point1.y-self.point2.y)**2)

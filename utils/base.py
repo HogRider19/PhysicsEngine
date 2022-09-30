@@ -33,11 +33,20 @@ class RayCast:
 
         a,b,c = MathUtils.line_coefficients(line)
 
+        if a * v + b * w == 0:
+            return None
+
         t = (-a * lineray.point1.x - b * lineray.point1.y - c) / (a * v + b * w)
 
         if t > 0:
             x = lineray.point1.x + v * t
             y = lineray.point1.y + w * t
+
+            d1 = MathUtils.distance_point_to_point(Point(x,y), line.point1)
+            d2 = MathUtils.distance_point_to_point(Point(x,y), line.point2)
+            d3 = line.get_len()
+            if abs(d1 + d2 - d3) > 0.01:
+                return None
 
             return Point(x, y)
 

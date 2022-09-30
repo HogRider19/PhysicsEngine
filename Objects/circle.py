@@ -1,4 +1,5 @@
 from Basicobjects.physicsObject import PhysicsObject
+from utils.moment import circle_moment
 
 
 class Circle(PhysicsObject):

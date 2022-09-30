@@ -1,4 +1,5 @@
-from turtle import position
+import math
+from turtle import back, position
 import matplotlib.pyplot as plt
 from Basicobjects.physicsObject import PhysicsObject
 from MathОperators.ray import Ray
@@ -52,11 +53,11 @@ clock = pg.time.Clock()
 
 
 rect = Rect(50, 50, position=Point(600, 350))
-circle = Circle(20, position=Point(600,50))
+circle = Circle(20, position=Point(600 + 50,350 + 50))
 
 info = CollisionPoint(rect, circle).get_cross_point()
 
-
+a = 0.1
 #Отрисовка PyGame
 while True:
     surface.fill(pg.Color('black'))
@@ -67,9 +68,10 @@ while True:
 
     draw_rect(rect, surface)
     draw_circle(circle, surface)
-    draw_info(info, surface)
 
-    circle.position.y -= 0.1
+    circle.position.x = math.sin(a)*50 + rect.position.x
+    circle.position.y = math.cos(a)*50 + rect.position.y
+    a+=0.05
     info = CollisionPoint(rect, circle).get_cross_point()
 
     pg.display.flip()

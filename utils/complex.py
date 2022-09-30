@@ -173,9 +173,9 @@ class CollisionPoint:
 
         if d <= d1:
             cross_point = rotateManager.get_starting_point(cross_point_r)
-            #return cross_point
+            return cross_point
 
-            return {
+            """return {
                 'cross_point': cross_point,
                 'alpha': alpha,
                 'alpha1':alpha1,
@@ -183,10 +183,10 @@ class CollisionPoint:
                 'd1': d1,
                 'line_c_r': rotateManager.get_starting_line(MathUtils.ray_to_line(ray_rect_circle)),
                 'lineNum': lineNum
-            }
+            }"""
 
-        #return None
-
+        return None
+        """
         return{
             'cross_point': None,
             'alpha': alpha,
@@ -195,7 +195,7 @@ class CollisionPoint:
             'd1': d1,
             'line_c_r': rotateManager.get_starting_line(MathUtils.ray_to_line(Ray(rect_pos_r, Vector(dx,dy)))),
             'lineNum': lineNum
-        }
+        }"""
 
 
     def _cross_rect_rect(self) -> Point: 
