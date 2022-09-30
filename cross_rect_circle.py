@@ -12,6 +12,8 @@ from Objects.circle import Circle
 from Objects.rect import Rect
 import time
 import pygame as pg
+from simulation.simulation import Simulation
+from simulation.space import Space
 
 def draw_rect(rect: Rect, sc):
     for line in rect.get_component_lines():
@@ -52,12 +54,19 @@ surface = pg.display.set_mode(RES)
 clock = pg.time.Clock()
 
 
-rect = Rect(50, 50, position=Point(600, 350))
-circle = Circle(20, position=Point(600 + 50,350 + 50))
+rect = Rect(50, 50, position=Point(400, 350))
+circle = Circle(20, position=Point(700, 330))
+circle.veloсity = Vector(-1,0)
 
-info = CollisionPoint(rect, circle).get_cross_point()
 
-a = 0.1
+space = Space(1000, 1000, 0)
+simManager = Simulation(space)
+simManager.set_objects(
+    rect,
+    circle,
+)
+
+
 #Отрисовка PyGame
 while True:
     surface.fill(pg.Color('black'))
@@ -69,10 +78,8 @@ while True:
     draw_rect(rect, surface)
     draw_circle(circle, surface)
 
-    circle.position.x = math.sin(a)*50 + rect.position.x
-    circle.position.y = math.cos(a)*50 + rect.position.y
-    a+=0.05
-    info = CollisionPoint(rect, circle).get_cross_point()
+    simManager.update()
+
 
     pg.display.flip()
     clock.tick(FPS)
