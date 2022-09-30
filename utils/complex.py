@@ -1,9 +1,13 @@
+import math
 from typing import Union
+from MathОperators.line import Line
 from MathОperators.point import Point
+from MathОperators.ray import Ray
 from MathОperators.vector import Vector
 from Objects.circle import Circle
 from Objects.rect import Rect
-from utils.base import MathUtils
+from utils.base import MathUtils, RayCast
+from utils.base import CoordinateSystemRotation
 
 
 class DistanceBetweenObjects:
@@ -114,10 +118,10 @@ class CollisionPoint:
         3) a = arctg(dy/dx)
         4) a1 = arctg(h/w)
         5) lineNum = 
-                1: -a1 < a < a1
-                2: a1 < a < pi - a1
-                3: pi - a1 < a < pi + a1
-                4: pi+a1 < a < 2pi - a1
+                3: -a1 < a < a1
+                4: a1 < a < pi - a1
+                1: pi - a1 < a < pi + a1
+                2: pi+a1 < a < 2pi - a1
         6) d = sqrt(dx**2 + dy**2)
         7) d' = dist(Ld and lineNum)
         8) if d <= d':
@@ -125,6 +129,44 @@ class CollisionPoint:
             else:
                 None
         """
+        rect = self.object1
+        circle = self.object2
+
+        lines = rect.get_component_lines()
+
+        rotateManager = CoordinateSystemRotation(ang=rect.ang)
+
+        lines_r = list(map(lambda x: rotateManager.get_transformed_line(x), lines))
+        circle_pos_r = rotateManager.get_transformed_point(circle.position)
+        rect_pos_r = rotateManager.get_transformed_point(rect.position)
+
+        dx = circle_pos_r.x - rect_pos_r.x
+        dy = circle_pos_r.y - rect_pos_r.y
+
+        alpha = math.atan(dy/dx)
+        alpha1 = math.atan(rect.height/rect.width)
+
+        lineNum = 0
+        if -alpha1 <= alpha <= alpha1:
+            lineNum = 2
+        elif alpha1 <= alpha <= math.pi - alpha1:
+            lineNum = 3
+        elif math.pi - alpha1 <= alpha <= math.pi + alpha1:
+            lineNum = 0
+        elif math.pi + alpha1 <= alpha <= 2*math.pi - alpha1:
+            lineNum = 1
+
+        d = math.sqrt(dx**2 + dy**2)
+        d1 = MathUtils.distance_point_to_line(rect_pos_r, lines_r[lineNum])
+
+        if d <= d1:
+            ray_rect_circle = Ray(rect_pos_r, Vector(dx,dy))
+            cross_point_r = RayCast(ray_rect_circle, lines_r[lineNum]).get_cross_point()
+            cross_point = rotateManager.get_starting_point(cross_point_r)
+            return cross_point
+
+        return None
+
 
     def _cross_rect_rect(self) -> Point: 
         pass 

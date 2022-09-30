@@ -61,6 +61,18 @@ class CoordinateSystemRotation:
     def __init__(self, ang: float) -> None:
         self.ang = ang
 
+    def get_transformed_line(self, line: Line) -> Line:        
+        return Line(
+            self.get_transformed_point(line.point1),
+            self.get_transformed_point(line.point2),
+        )
+
+    def get_starting_line(self, line: Line) -> Line:
+        return Line(
+            self.get_starting_point(line.point1),
+            self.get_starting_point(line.point2),
+        )
+
     def get_transformed_point(self, point: Point) -> Point:
         """
         x' = x * cos(a) + y * sin(a)
