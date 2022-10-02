@@ -23,13 +23,16 @@ class Simulation:
     def update(self) -> None:
         
         self._colision_update()
-        self._gravity_update()
+        self._influence_space_update()
         self._replace_object_in_border()
         self._update_objects()
 
-    def _gravity_update(self) -> None:
+    def _influence_space_update(self) -> None:
         for object in self.objects:
             object.add_force(Vector(0, self.space.gravity))
+            object.veloсity.mult(1 - self.space.viscosity/100)
+            object.ang_veloсity *= (1 - self.space.viscosity_ang/100)
+
 
     def _colision_update(self) -> None:
         for index1, object1 in enumerate(self.objects):
@@ -39,9 +42,7 @@ class Simulation:
 
                     if colision_point:
 
-                        object1.add_relative_force(object2.veloсity, colision_point)
-                        #object2.add_relative_force(Vector(-object2.veloсity.x, -object2.veloсity.y), colision_point)
-                        object2.veloсity = Vector(-object2.veloсity.x, -object2.veloсity.y)
+                        pass
 
     def _replace_object_in_border(self):
         for object in self.objects:

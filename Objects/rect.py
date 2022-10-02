@@ -2,6 +2,7 @@ from Basicobjects.physicsObject import PhysicsObject
 from MathОperators.line import Line
 from MathОperators.point import Point
 from MathОperators.vector import Vector
+from utils.moment import rect_moment
 from utils.base import CoordinateSystemRotation
 
 
@@ -11,6 +12,7 @@ class Rect(PhysicsObject):
         self.height = height
         self.width = width
         super().__init__(*args, **kwargs)
+        self.moment_inertia = rect_moment(self.width, self.height, self.mas)
 
     def get_component_lines(self) -> list:
         """Возвращает список составных линий"""

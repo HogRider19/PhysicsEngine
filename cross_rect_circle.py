@@ -12,6 +12,7 @@ from Objects.circle import Circle
 from Objects.rect import Rect
 import time
 import pygame as pg
+import matplotlib.pyplot as plt
 from simulation.simulation import Simulation
 from simulation.space import Space
 
@@ -54,32 +55,44 @@ surface = pg.display.set_mode(RES)
 clock = pg.time.Clock()
 
 
-rect = Rect(50, 50, position=Point(400, 350))
-circle = Circle(20, position=Point(700, 330))
-circle.veloсity = Vector(-1,0)
+rect = Rect(500, 50, position=Point(400, 350), mas = 0.1)
+circle = Circle(20, position=Point(700, 200))
+circle.veloсity = Vector(-4,0)
 
 
-space = Space(1200, 700, 1)
+space = Space(1200, 700, 0, 0, 0.2)
 simManager = Simulation(space)
 simManager.set_objects(
     rect,
     circle,
 )
 
+rect_ang_vel = []
+rect_vel_x = []
 
 #Отрисовка PyGame
-while True:
+is_sim = True
+while is_sim:
     surface.fill(pg.Color('black'))
 
     for i in pg.event.get():
         if i.type == pg.QUIT:
-            exit()
+            is_sim = False
 
     draw_rect(rect, surface)
     draw_circle(circle, surface)
 
     simManager.update()
 
+    rect_ang_vel.append(rect.ang_veloсity)
+    rect_vel_x.append(rect.veloсity.x)
+
 
     pg.display.flip()
     clock.tick(FPS)
+
+
+
+plt.plot(rect_ang_vel)
+plt.grid(True)
+plt.show()
