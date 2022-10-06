@@ -79,7 +79,7 @@ class CollisionPoint:
         self.object1 = object1
         self.object2 = object2
 
-    def get_cross_point(self) -> float:
+    def get_cross_point(self) -> Point:
         cross_point = None
 
         if isinstance(self.object1, Circle) and  isinstance(self.object2, Circle):
@@ -99,7 +99,7 @@ class CollisionPoint:
             cross_point = self._cross_circle_rect()
         
         else:
-            raise "Invalid object"
+            raise ValueError("Invalid object")
 
         return cross_point
 
@@ -149,16 +149,6 @@ class CollisionPoint:
         alpha1 = math.atan(rect.height/rect.width)
 
         lineNum = 0
-        """
-        if -alpha1 <= alpha <= alpha1:
-            lineNum = 2
-        elif alpha1 <= alpha <= math.pi - alpha1:
-            lineNum = 3
-        elif math.pi - alpha1 <= alpha <= math.pi + alpha1:
-            lineNum = 0
-        elif math.pi + alpha1 <= alpha <= 2*math.pi - alpha1:
-            lineNum = 1
-        """
 
         for index, line in enumerate(lines_r):
             ray_rect_circle = Ray(rect_pos_r, Vector(dx,dy))
@@ -175,27 +165,8 @@ class CollisionPoint:
             cross_point = rotateManager.get_starting_point(cross_point_r)
             return cross_point
 
-            """return {
-                'cross_point': cross_point,
-                'alpha': alpha,
-                'alpha1':alpha1,
-                'd' : d,
-                'd1': d1,
-                'line_c_r': rotateManager.get_starting_line(MathUtils.ray_to_line(ray_rect_circle)),
-                'lineNum': lineNum
-            }"""
 
         return None
-        """
-        return{
-            'cross_point': None,
-            'alpha': alpha,
-            'alpha1':alpha1,
-            'd' : d,
-            'd1': d1,
-            'line_c_r': rotateManager.get_starting_line(MathUtils.ray_to_line(Ray(rect_pos_r, Vector(dx,dy)))),
-            'lineNum': lineNum
-        }"""
 
 
     def _cross_rect_rect(self) -> Point: 

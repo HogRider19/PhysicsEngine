@@ -2,7 +2,7 @@
 
 class Space:
 
-    def __init__(self, height: float, width: float, gravity = 0, viscosity = 0, viscosity_ang = 0) -> None:
+    def __init__(self, height: float, width: float, gravity = 0.0, viscosity = 0.0, viscosity_ang = 0.0) -> None:
         self.height = height
         self.width = width
         self.gravity = gravity

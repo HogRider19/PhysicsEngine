@@ -25,6 +25,11 @@ class PhysicsObject:
         self.moment_list = []
         self.collision_list = []
 
+    def get_momentum(self):
+        momentum = Vector(self.veloсity.x, self.veloсity.y)
+        momentum.mult(self.mas)
+        return momentum
+
     def add_force(self, force: Vector) -> None:
         self.force_list.append(Vector(force.x * dt, force.y * dt))
 

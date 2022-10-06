@@ -56,8 +56,9 @@ clock = pg.time.Clock()
 
 
 rect = Rect(500, 50, position=Point(400, 350), mas = 0.1)
-circle = Circle(20, position=Point(700, 200))
+circle = Circle(20, position=Point(700, 350))
 circle.veloсity = Vector(-4,0)
+rect.veloсity = Vector(4,0)
 
 
 space = Space(1200, 700, 0, 0, 0.2)

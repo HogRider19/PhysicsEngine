@@ -42,7 +42,11 @@ class Simulation:
 
                     if colision_point:
 
-                        pass
+                        momentum = object1.get_momentum() + object2.get_momentum()
+                        momentum.mult(0.5)
+
+                        self.objects[index2].add_relative_force(momentum, colision_point)
+                        self.objects[index1].add_relative_force(momentum, colision_point)
 
     def _replace_object_in_border(self):
         for object in self.objects:
