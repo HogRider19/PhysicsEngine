@@ -38,7 +38,8 @@ class Simulation:
         for index1, object1 in enumerate(self.objects):
             for index2, object2 in enumerate(self.objects):
                 if index1 != index2:
-                    colision_point = CollisionPoint(object1, object2).get_cross_point()
+                    collisionPointManager = CollisionPoint(object1, object2)
+                    colision_point = collisionPointManager.get_cross_point()
 
                     if colision_point:
 

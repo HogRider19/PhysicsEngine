@@ -56,7 +56,7 @@ clock = pg.time.Clock()
 
 
 rect = Rect(500, 50, position=Point(400, 350), mas = 0.1)
-circle = Circle(20, position=Point(700, 350))
+circle = Circle(20, position=Point(700, 300))
 circle.veloсity = Vector(-4,0)
 rect.veloсity = Vector(4,0)
 
@@ -70,6 +70,7 @@ simManager.set_objects(
 
 rect_ang_vel = []
 rect_vel_x = []
+sum_moment = []
 
 #Отрисовка PyGame
 is_sim = True
@@ -87,6 +88,7 @@ while is_sim:
 
     rect_ang_vel.append(rect.ang_veloсity)
     rect_vel_x.append(rect.veloсity.x)
+    sum_moment.append(circle.get_momentum().get_len())
 
 
     pg.display.flip()

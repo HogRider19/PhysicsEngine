@@ -78,14 +78,18 @@ class CollisionPoint:
     def __init__(self, object1: Union[Rect, Circle], object2: Union[Rect, Circle]) -> None:
         self.object1 = object1
         self.object2 = object2
+        self._info = {}
 
     def get_cross_point(self) -> Point:
+        self._info = {}
         cross_point = None
 
         if isinstance(self.object1, Circle) and  isinstance(self.object2, Circle):
+            self._info.update({'type': 'cc'})
             cross_point = self._cross_circle_circle()
 
         elif isinstance(self.object1, Rect) and  isinstance(self.object2, Rect):
+            self._info.update({'type': 'rr'})
             cross_point = self._cross_rect_rect()
 
         elif (isinstance(self.object1, Circle) and
@@ -96,6 +100,7 @@ class CollisionPoint:
                 # Меняем объксты местами если первый не Circle
                 self.object1, self.object2 = self.object2, self.object1
 
+            self._info.update({'type': 'cr'})
             cross_point = self._cross_circle_rect()
         
         else:
@@ -103,15 +108,23 @@ class CollisionPoint:
 
         return cross_point
 
-    def _cross_circle_circle(self) -> Point: 
+    def get_info(self) -> dict:
+        """
+        Словарь _info заполняется после 
+        расчета точки соударения
+        """
+        return self._info
+
+    def _cross_circle_circle(self) -> Point:
         vector12 = Vector(self.object1.position.x - self.object2.position.x,
                              self.object1.position.y  - self.object2.position.y)
         vector12.normalize()
         vector12.mult(self.object1.radius)
         cross_point = self.object1.position.displace_new_point(vector12)
+
         return cross_point
 
-    def _cross_circle_rect(self) -> Point: 
+    def _cross_circle_rect(self) -> Union[Point, None]: 
         """
         1) Получаем точки rect
         2) Поворот системы координат
@@ -163,8 +176,12 @@ class CollisionPoint:
 
         if d <= d1:
             cross_point = rotateManager.get_starting_point(cross_point_r)
-            return cross_point
 
+            self._info.update({
+                'collision_line': rotateManager.get_starting_line(lines_r[lineNum]),
+            })
+
+            return cross_point
 
         return None
 
