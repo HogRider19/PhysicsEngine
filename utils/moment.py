@@ -1,5 +1,4 @@
 
-
 def rect_moment(a: float, b: float, mas: float) -> float:
     moment = a*b/12 * mas
     return moment

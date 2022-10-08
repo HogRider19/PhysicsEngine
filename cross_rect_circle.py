@@ -55,13 +55,13 @@ surface = pg.display.set_mode(RES)
 clock = pg.time.Clock()
 
 
-rect = Rect(500, 50, position=Point(400, 350), mas = 0.1)
-circle = Circle(20, position=Point(700, 300))
+rect = Rect(500, 100, position=Point(400, 350), moment_inertia=1, mas=0.1, ang=math.pi/2)
+circle = Circle(20, position=Point(700, 350), moment_inertia=1, mas=0.1)
 circle.veloсity = Vector(-4,0)
-rect.veloсity = Vector(4,0)
+rect.veloсity = Vector(0,0)
 
 
-space = Space(1200, 700, 0, 0, 0.2)
+space = Space(1200, 700, 0, 0, 0)
 simManager = Simulation(space)
 simManager.set_objects(
     rect,
@@ -70,7 +70,8 @@ simManager.set_objects(
 
 rect_ang_vel = []
 rect_vel_x = []
-sum_moment = []
+
+circle_force = []
 
 #Отрисовка PyGame
 is_sim = True
@@ -86,16 +87,11 @@ while is_sim:
 
     simManager.update()
 
-    rect_ang_vel.append(rect.ang_veloсity)
-    rect_vel_x.append(rect.veloсity.x)
-    sum_moment.append(circle.get_momentum().get_len())
-
-
     pg.display.flip()
     clock.tick(FPS)
 
 
 
-plt.plot(rect_ang_vel)
+plt.plot(rect.memory_force)
 plt.grid(True)
 plt.show()

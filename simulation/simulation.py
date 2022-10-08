@@ -4,7 +4,7 @@ from simulation.space import Space
 from MathОperators.line import Line
 from MathОperators.point import Point
 from MathОperators.vector import Vector
-from utils.complex import CollisionPoint
+from utils.complex import CollisionPoint, Interaction
 from typing import Union
 
 class Simulation:
@@ -12,13 +12,18 @@ class Simulation:
     def __init__(self, space: Space) -> None:
         self.space = space
         self.objects = []
+        self.interactionManager = Interaction([])
 
     def set_objects(self, *args: Union[Circle, Rect]) -> None:
         for object in args:
             if isinstance(object, (Circle, Rect)):
+                self.interactionManager.add_object(object)
                 self.objects.append(object)
             else:
                 raise TypeError("The object must be a Circle or Rect!")
+
+    def get_objects(self) -> list:
+        return self.objects
 
     def update(self) -> None:
         
@@ -35,19 +40,8 @@ class Simulation:
 
 
     def _colision_update(self) -> None:
-        for index1, object1 in enumerate(self.objects):
-            for index2, object2 in enumerate(self.objects):
-                if index1 != index2:
-                    collisionPointManager = CollisionPoint(object1, object2)
-                    colision_point = collisionPointManager.get_cross_point()
+        self.interactionManager.distribute_interactions()
 
-                    if colision_point:
-
-                        momentum = object1.get_momentum() + object2.get_momentum()
-                        momentum.mult(0.5)
-
-                        self.objects[index2].add_relative_force(momentum, colision_point)
-                        self.objects[index1].add_relative_force(momentum, colision_point)
 
     def _replace_object_in_border(self):
         for object in self.objects:

@@ -6,6 +6,8 @@ import math
 
 
 dt = 1/100
+df = 0.1
+dm = 1
 
 
 class PhysicsObject:
@@ -25,6 +27,9 @@ class PhysicsObject:
         self.moment_list = []
         self.collision_list = []
 
+        """For test"""
+        self.memory_force = []
+
     def get_momentum(self):
         momentum = Vector(self.veloсity.x, self.veloсity.y)
         momentum.mult(self.mas)
@@ -32,6 +37,9 @@ class PhysicsObject:
 
     def add_force(self, force: Vector) -> None:
         self.force_list.append(Vector(force.x * dt, force.y * dt))
+        """For test"""
+        if force.x!= 0:
+            self.memory_force.append(force.x)
 
     def add_moment(self, moment: float) -> None:
         self.moment_list.append(-moment*dt)
@@ -43,12 +51,13 @@ class PhysicsObject:
         self.add_moment(moment)
         self.add_force(force)
 
+
     def _update_force(self):
         res_force = Vector(0,0)
         for force in self.force_list:
             res_force += force
         res_force.mult(1/self.mas)
-        self.veloсity += res_force
+        self.veloсity += res_force        
         self.force_list = []
 
     def _update_movent(self):

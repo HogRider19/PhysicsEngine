@@ -34,6 +34,10 @@ class Vector:
     def mult(self, value: float) -> None:
         self.x,self.y = self.x*value,self.y*value
 
+    def clone(self):
+        return Vector(self.x, self.y)
+
+
 
 
 

@@ -85,11 +85,9 @@ class CollisionPoint:
         cross_point = None
 
         if isinstance(self.object1, Circle) and  isinstance(self.object2, Circle):
-            self._info.update({'type': 'cc'})
             cross_point = self._cross_circle_circle()
 
         elif isinstance(self.object1, Rect) and  isinstance(self.object2, Rect):
-            self._info.update({'type': 'rr'})
             cross_point = self._cross_rect_rect()
 
         elif (isinstance(self.object1, Circle) and
@@ -100,7 +98,6 @@ class CollisionPoint:
                 # Меняем объксты местами если первый не Circle
                 self.object1, self.object2 = self.object2, self.object1
 
-            self._info.update({'type': 'cr'})
             cross_point = self._cross_circle_rect()
         
         else:
@@ -121,6 +118,11 @@ class CollisionPoint:
         vector12.normalize()
         vector12.mult(self.object1.radius)
         cross_point = self.object1.position.displace_new_point(vector12)
+
+
+        self._set_info(
+            type='cc',
+        )
 
         return cross_point
 
@@ -177,9 +179,17 @@ class CollisionPoint:
         if d <= d1:
             cross_point = rotateManager.get_starting_point(cross_point_r)
 
-            self._info.update({
-                'collision_line': rotateManager.get_starting_line(lines_r[lineNum]),
-            })
+            collision_line = rotateManager.get_starting_line(lines_r[lineNum])
+            collision_vector = Vector(collision_line.point1.x-collision_line.point2.x,
+                                        collision_line.point1.y-collision_line.point2.y)
+            collision_vector.rotate(math.pi/2)
+            force_vector = collision_vector
+
+            self._set_info(
+                type='cr',
+                collision_line=collision_line,
+                force_vector = force_vector
+            )
 
             return cross_point
 
@@ -188,3 +198,49 @@ class CollisionPoint:
 
     def _cross_rect_rect(self) -> Point: 
         pass 
+
+    def _set_info(self, **kwargs) -> None:
+        self.info = {}
+        self._info.update(kwargs)
+
+
+
+class Interaction:
+    
+    def __init__(self, objects: list) -> None:
+        self.objects = []
+        for object in objects:
+            if isinstance(object, (Circle, Rect)):
+                self.objects.append(object)
+            else:
+                raise TypeError("The object must be a Circle or Rect!")
+
+    def add_object(self, object: Union[Rect, Circle]) -> None:
+        if isinstance(object, (Circle, Rect)):
+            self.objects.append(object)
+        else:
+            raise TypeError("The object must be a Circle or Rect!")
+
+    def distribute_interactions(self) -> None:
+        mamory_dict = {}
+        for index1, object1 in enumerate(self.objects):
+            for index2, object2 in enumerate(self.objects):
+                if index1 != index2:
+                    collisionPointManager = CollisionPoint(object1, object2)
+                    colision_point = collisionPointManager.get_cross_point()
+
+                    if colision_point and not mamory_dict.get(index1, None) == index2:
+
+                        mamory_dict.update({index2: index1, index1: index2})
+
+                        info = collisionPointManager.get_info()
+
+                        collision_line = info.get('collision_line')
+                        force_vector = info.get('force_vector')
+                        
+                        force_vector.mult(1/100)
+
+                        self.objects[index2].add_relative_force(force_vector, colision_point)
+                        force_vector.mult(-1)
+                        self.objects[index1].add_relative_force(force_vector, colision_point)
+
