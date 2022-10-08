@@ -1,3 +1,6 @@
+import os,sys
+sys.path.append(os.getcwd())
+
 import math
 from Basicobjects.physicsObject import PhysicsObject
 from MathОperators.ray import Ray
@@ -92,7 +95,7 @@ def cross_point_rect_circle_test(values):
     ).get_cross_point()
 
 
-def get_report():
+def report():
     manager = ReportManager()
     
     manager.register(
@@ -110,3 +113,6 @@ def get_report():
     )
 
     return manager.get_report()
+
+
+print(report())
