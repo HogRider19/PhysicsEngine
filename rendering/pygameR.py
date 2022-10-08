@@ -22,11 +22,19 @@ from simulation.space import Space
 
 class PygameRender:
 
-    def __init__(self, simManager: Simulation, time: float, width=1200, height=700) -> None:
+    BLACK = (0, 0, 0)
+    WHITE = (255, 255, 255)
+    RED = (255, 0, 0)
+    GREEN = (0, 255, 0)
+    BLUE = (0, 0, 255)
+
+    def __init__(self, simManager: Simulation, time: float, width=1200, height=700, collectInfo=False) -> None:
         self.simManager = simManager
         self.time = time
         self.width = width
         self.height = height
+        self.collectInfo = collectInfo
+        self.info = []
         self.FPS = 60
         self.is_sim = True
         self.src = None
@@ -51,14 +59,46 @@ class PygameRender:
             self.simManager.update()
             self._draw_obgects()
 
+            if self.collectInfo:
+                self._collect_info()
+
             pg.display.flip()
             self.clock.tick(self.FPS)
+
+    def get_info(self) -> list:
+        return self.info
 
     def _prepare(self) -> None:
         pg.init()
         self.scr = pg.display.set_mode((self.width, self.height))
         self.clock = pg.time.Clock()
         self.is_sim = True
+        
+        if self.collectInfo:
+            for i in range(len(self.simManager.get_objects())):
+                self.simManager.objects[i].collect_info = True
+                self.info.append({
+                    'xpos': [],
+                    'ypos': [],
+                    'xvel': [],
+                    'yvel': [],
+                    'xforce': [],
+                    'yforce': [],
+                    'moment': [],
+                    'ang':  [],
+                })
+
+    def _collect_info(self) -> None:
+        for index, object in enumerate(self.simManager.get_objects()):
+            own_info = self.info[index]
+            own_info['xpos'].append(object.position.x)
+            own_info['ypos'].append(object.position.y)
+            own_info['xvel'].append(object.veloсity.x)
+            own_info['yvel'].append(object.veloсity.y)   
+            own_info['xforce'] = list(map(lambda a:a.x, object.force_info))
+            own_info['yforce'] = list(map(lambda a:a.y, object.force_info))  
+            own_info['moment'] = object.moment_info  
+            own_info['ang'].append(object.ang)      
 
     def _draw_obgects(self) -> None:
         for object in self.simManager.get_objects():
@@ -78,4 +118,5 @@ class PygameRender:
         pg.draw.circle(self.scr, (225, 225, 0), 
                     (circle.position.x, circle.position.y), circle.radius)
 
-    
+    def _draw_line(self, line: Line) -> None:
+        pg.draw.line(self.scr, (255,50,50), [line.point1.x, line.point1.y], [line.point2.x, line.point2.y], 3)

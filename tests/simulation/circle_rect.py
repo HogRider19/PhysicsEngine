@@ -3,6 +3,7 @@ sys.path.append(os.getcwd())
 
 import math
 import matplotlib.pyplot as plt
+from rendering.matplotR import PloterInfo
 from Objects.circle import Circle
 from Objects.rect import Rect
 from rendering.pygameR import PygameRender
@@ -24,5 +25,12 @@ simManager.set_objects(
     circle1,
 )
 
-pygameRender = PygameRender(simManager, time=None)
+pygameRender = PygameRender(simManager, time=4, collectInfo=True)
 pygameRender.run()
+
+info = pygameRender.get_info()
+
+ploter = PloterInfo(info, num_obgect = (0,))
+ploter.show()
+
+

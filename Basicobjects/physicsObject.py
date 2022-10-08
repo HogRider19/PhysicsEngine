@@ -14,7 +14,7 @@ class PhysicsObject:
 
     def __init__(self, position = Point(0,0), material = Material(), 
                                         static = False, mas = 1, moment_inertia = 1,
-                                        veloсity = Vector(0,0), ang_veloсity = 0, ang = 0):
+                                        veloсity = Vector(0,0), ang_veloсity = 0, ang = 0, collect_info=False):
         self.position = position 
         self.material = material
         self.ang = ang
@@ -27,8 +27,9 @@ class PhysicsObject:
         self.moment_list = []
         self.collision_list = []
 
-        """For test"""
-        self.memory_force = []
+        self.collect_info = collect_info
+        self.force_info = []
+        self.moment_info = []
 
     def get_momentum(self):
         momentum = Vector(self.veloсity.x, self.veloсity.y)
@@ -37,12 +38,15 @@ class PhysicsObject:
 
     def add_force(self, force: Vector) -> None:
         self.force_list.append(Vector(force.x * dt, force.y * dt))
-        """For test"""
-        if force.x!= 0:
-            self.memory_force.append(force.x)
+
+        if self.collect_info:
+            self.force_info.append(force)
 
     def add_moment(self, moment: float) -> None:
         self.moment_list.append(-moment*dt)
+
+        if self.collect_info:
+            self.moment_info.append(moment)
 
     def add_relative_force(self, force: Vector, point: Point):
         dx = point.x - self.position.x
@@ -50,7 +54,6 @@ class PhysicsObject:
         moment = (dx * force.y + dy * force.x)
         self.add_moment(moment)
         self.add_force(force)
-
 
     def _update_force(self):
         res_force = Vector(0,0)
