@@ -80,12 +80,13 @@ class PygameRender:
                 self.info.append({
                     'xpos': [],
                     'ypos': [],
+                    'ang':  [],
                     'xvel': [],
                     'yvel': [],
+                    'angvel': [],
                     'xforce': [],
                     'yforce': [],
                     'moment': [],
-                    'ang':  [],
                 })
 
     def _collect_info(self) -> None:
@@ -98,7 +99,8 @@ class PygameRender:
             own_info['xforce'] = list(map(lambda a:a.x, object.force_info))
             own_info['yforce'] = list(map(lambda a:a.y, object.force_info))  
             own_info['moment'] = object.moment_info  
-            own_info['ang'].append(object.ang)      
+            own_info['ang'].append(object.ang) 
+            own_info['angvel'].append(object.ang_veloсity)     
 
     def _draw_obgects(self) -> None:
         for object in self.simManager.get_objects():

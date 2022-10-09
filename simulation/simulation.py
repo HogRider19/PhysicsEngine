@@ -34,7 +34,8 @@ class Simulation:
 
     def _influence_space_update(self) -> None:
         for object in self.objects:
-            object.add_force(Vector(0, self.space.gravity))
+            if self.space.gravity:
+                object.add_force(Vector(0, self.space.gravity))
             object.veloсity.mult(1 - self.space.viscosity/100)
             object.ang_veloсity *= (1 - self.space.viscosity_ang/100)
 

@@ -116,12 +116,17 @@ class CollisionPoint:
         vector12 = Vector(self.object1.position.x - self.object2.position.x,
                              self.object1.position.y  - self.object2.position.y)
         vector12.normalize()
+
+        force_vector = vector12.clone()
+
         vector12.mult(self.object1.radius)
         cross_point = self.object1.position.displace_new_point(vector12)
 
 
         self._set_info(
             type='cc',
+            collision_line=None,
+            force_vector = force_vector
         )
 
         return cross_point
@@ -229,9 +234,9 @@ class Interaction:
                     collisionPointManager = CollisionPoint(object1, object2)
                     colision_point = collisionPointManager.get_cross_point()
 
-                    if colision_point and not mamory_dict.get(index1, None) == index2:
+                    if colision_point and not mamory_dict.get(index2, None) == index1:
 
-                        mamory_dict.update({index2: index1, index1: index2})
+                        mamory_dict.update({index1: index2})
 
                         info = collisionPointManager.get_info()
 

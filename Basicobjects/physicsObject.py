@@ -2,6 +2,7 @@ from MathОperators.point import Point
 from MathОperators.vector import Vector
 from MathОperators.point  import Point
 from .material import Material
+from functools import reduce
 import math
 
 
@@ -39,14 +40,8 @@ class PhysicsObject:
     def add_force(self, force: Vector) -> None:
         self.force_list.append(Vector(force.x * dt, force.y * dt))
 
-        if self.collect_info:
-            self.force_info.append(force)
-
     def add_moment(self, moment: float) -> None:
         self.moment_list.append(-moment*dt)
-
-        if self.collect_info:
-            self.moment_info.append(moment)
 
     def add_relative_force(self, force: Vector, point: Point):
         dx = point.x - self.position.x
@@ -80,11 +75,20 @@ class PhysicsObject:
 
     def _update_joint(self):
         pass
+    
+    def _collectInfo(self): 
+        self.force_info.append(reduce(lambda a,b: a + b, self.force_list, Vector(0, 0)))
+        self.moment_info.append(reduce(lambda a,b: a + b, self.moment_list, 0))
 
     def update(self):
+
+        if self.collect_info:
+            self._collectInfo()
+
         if self.static == False:
             self._update_force()
             self._update_movent()
             self._update_joint()
             self._update_transform()
+
 

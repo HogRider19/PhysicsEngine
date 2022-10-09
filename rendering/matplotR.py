@@ -30,7 +30,7 @@ class PloterInfo:
         for object_num in range(len(self.info)):
             plt.subplot(len(self.info), 1, object_num+1)
             plt.plot(self.info[object_num][key])
-            plt.title(key, x=0.1, y=0.85)
+            plt.title(object_num, x=0.1, y=0.85)
             plt.grid(True)
 
         plt.suptitle(f"Key: {key}")
