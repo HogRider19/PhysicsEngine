@@ -12,7 +12,7 @@ class Simulation:
     def __init__(self, space: Space) -> None:
         self.space = space
         self.objects = []
-        self.interactionManager = Interaction([])
+        self.interactionManager = Interaction()
 
     def set_objects(self, *args: Union[Circle, Rect]) -> None:
         for object in args:

@@ -33,6 +33,6 @@ pygameRender.run()
 
 info = pygameRender.get_info()
 
-ploter = PloterInfo(info, num_obgect = (0,1,2))
+ploter = PloterInfo(info, num_obgect = (0,1,2), drawspace=True)
 #ploter.show()
-ploter.show_once('xforce')
+ploter.show_once('xforce', 'xvel')

@@ -85,10 +85,10 @@ class CollisionPoint:
         cross_point = None
 
         if isinstance(self.object1, Circle) and  isinstance(self.object2, Circle):
-            cross_point = self._cross_circle_circle()
+            local_info = self._cross_circle_circle()
 
         elif isinstance(self.object1, Rect) and  isinstance(self.object2, Rect):
-            cross_point = self._cross_rect_rect()
+            local_info = self._cross_rect_rect()
 
         elif (isinstance(self.object1, Circle) and
                     isinstance(self.object2, Rect)) or (isinstance(self.object2, Circle) and
@@ -98,12 +98,15 @@ class CollisionPoint:
                 # Меняем объксты местами если первый не Circle
                 self.object1, self.object2 = self.object2, self.object1
 
-            cross_point = self._cross_circle_rect()
+            local_info = self._cross_circle_rect()
         
         else:
             raise ValueError("Invalid object")
 
-        return cross_point
+        
+        self._info = local_info
+
+        return self._info.get('cross_point', None)
 
     def get_info(self) -> dict:
         """
@@ -116,20 +119,17 @@ class CollisionPoint:
         vector12 = Vector(self.object1.position.x - self.object2.position.x,
                              self.object1.position.y  - self.object2.position.y)
         vector12.normalize()
-
         force_vector = vector12.clone()
-
         vector12.mult(self.object1.radius)
         cross_point = self.object1.position.displace_new_point(vector12)
 
+        local_info = {
+            'type': 'cc',
+            'cross_point': cross_point,
+            'force_vector': force_vector,
+        }
 
-        self._set_info(
-            type='cc',
-            collision_line=None,
-            force_vector = force_vector
-        )
-
-        return cross_point
+        return local_info
 
     def _cross_circle_rect(self) -> Union[Point, None]: 
         """
@@ -190,35 +190,31 @@ class CollisionPoint:
             collision_vector.rotate(math.pi/2)
             force_vector = collision_vector
 
-            self._set_info(
-                type='cr',
-                collision_line=collision_line,
-                force_vector = force_vector
-            )
+            local_info = {
+                'type': 'cr',
+                'cross_point': cross_point,
+                'force_vector': force_vector,
+            }
 
-            return cross_point
+            return local_info
 
-        return None
+        return {}
 
 
     def _cross_rect_rect(self) -> Point: 
-        pass 
+        return None
 
     def _set_info(self, **kwargs) -> None:
-        self.info = {}
         self._info.update(kwargs)
 
 
 
 class Interaction:
     
-    def __init__(self, objects: list) -> None:
+    def __init__(self, objects = []) -> None:
         self.objects = []
         for object in objects:
-            if isinstance(object, (Circle, Rect)):
-                self.objects.append(object)
-            else:
-                raise TypeError("The object must be a Circle or Rect!")
+            self.add_object(object)
 
     def add_object(self, object: Union[Rect, Circle]) -> None:
         if isinstance(object, (Circle, Rect)):
@@ -237,15 +233,15 @@ class Interaction:
                     if colision_point and not mamory_dict.get(index2, None) == index1:
 
                         mamory_dict.update({index1: index2})
-
                         info = collisionPointManager.get_info()
+                        self._simple_interaction(object1, object2, info)
 
-                        collision_line = info.get('collision_line')
-                        force_vector = info.get('force_vector')
-                        
-                        force_vector.mult(1/100)
+    def _simple_interaction(self, obj1, obj2, info: dict):
 
-                        self.objects[index2].add_relative_force(force_vector, colision_point)
-                        force_vector.mult(-1)
-                        self.objects[index1].add_relative_force(force_vector, colision_point)
+        force_vector = info.get('force_vector')
+        force_vector.mult(1/100)
+
+        obj2.add_relative_force(force_vector, info.get('cross_point'))
+        force_vector.mult(-1)
+        obj1.add_relative_force(force_vector, info.get('cross_point'))
 
