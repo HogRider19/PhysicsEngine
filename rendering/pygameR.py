@@ -28,12 +28,14 @@ class PygameRender:
     GREEN = (0, 255, 0)
     BLUE = (0, 0, 255)
 
-    def __init__(self, simManager: Simulation, time: float, width=1200, height=700, collectInfo=False) -> None:
+    def __init__(self, simManager: Simulation, time: float, width=1200,
+                    height=700, collectInfo=False, drawinteraction=False) -> None:
         self.simManager = simManager
         self.time = time
         self.width = width
         self.height = height
         self.collectInfo = collectInfo
+        self.drawinteraction = drawinteraction
         self.info = []
         self.FPS = 60
         self.is_sim = True
@@ -58,6 +60,8 @@ class PygameRender:
 
             self.simManager.update()
             self._draw_obgects()
+            if self.drawinteraction:
+                self._draw_interaction()
 
             if self.collectInfo:
                 self._collect_info()
@@ -111,14 +115,26 @@ class PygameRender:
             else:
                 raise TypeError("The object must be a Circle or Rect!")
 
+    def _draw_interaction(self) -> None:
+        interinfo = self.simManager.get_interaction_info()
 
-    def _draw_rect(self, rect) -> None:
+        if interinfo:
+            cp = interinfo.get('cross_point')
+            fv = interinfo.get('force_vector')
+            fv.mult(4)
+            
+            pg.draw.circle(self.scr, (255,20,20), 
+                        (cp.x, cp.y), 10)
+
+            self._draw_line(Line(cp, cp.displace_new_point(fv)), color=(255,255,255))
+
+    def _draw_rect(self, rect, color=(50,50,255)) -> None:
         for line in rect.get_component_lines():
-            pg.draw.line(self.scr, (50,50,255), [line.point1.x, line.point1.y], [line.point2.x, line.point2.y], 3)
+            pg.draw.line(self.scr, color, [line.point1.x, line.point1.y], [line.point2.x, line.point2.y], 3)
 
-    def _draw_circle(self, circle: Circle) -> None:
-        pg.draw.circle(self.scr, (225, 225, 0), 
+    def _draw_circle(self, circle: Circle, color=(225, 225, 0)) -> None:
+        pg.draw.circle(self.scr, color, 
                     (circle.position.x, circle.position.y), circle.radius)
 
-    def _draw_line(self, line: Line) -> None:
-        pg.draw.line(self.scr, (255,50,50), [line.point1.x, line.point1.y], [line.point2.x, line.point2.y], 3)
+    def _draw_line(self, line: Line, color=(255,50,50)) -> None:
+        pg.draw.line(self.scr, color, [line.point1.x, line.point1.y], [line.point2.x, line.point2.y], 3)

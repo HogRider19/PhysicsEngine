@@ -13,12 +13,12 @@ from MathОperators.point import Point
 from MathОperators.vector import Vector
 
 
-rect1 = Rect(500, 100, position=Point(600, 350), 
-                        moment_inertia=1, mas=0.1, veloсity=Vector(0,0))
-circle1 = Circle(20, position=Point(800, 200), 
-                        moment_inertia=1, mas=0.1, veloсity=Vector(-4, 0))
-circle2 = Circle(20, position=Point(300, 360), 
-                        moment_inertia=1, mas=0.1, veloсity=Vector(3, 0))
+rect1 = Rect(500, 200, position=Point(600, 350), 
+                        moment_inertia=1, mas=10.1, veloсity=Vector(0,0))
+circle1 = Circle(20, position=Point(800, 500), 
+                        moment_inertia=1, mas=0.1, veloсity=Vector(-3, 0))
+circle2 = Circle(20, position=Point(400, 200), 
+                        moment_inertia=1, mas=0.1, veloсity=Vector(3, -0))
 
 space = Space(1200, 700, 0, 0.5, 1.5)
 simManager = Simulation(space)
@@ -28,11 +28,11 @@ simManager.set_objects(
     circle2,
 )
 
-pygameRender = PygameRender(simManager, time=3, collectInfo=True)
+pygameRender = PygameRender(simManager, time=3, collectInfo=True, drawinteraction=False)
 pygameRender.run()
 
 info = pygameRender.get_info()
 
 ploter = PloterInfo(info, num_obgect = (0,1,2), drawspace=True)
 #ploter.show()
-ploter.show_once('xforce', 'xvel')
+ploter.show_once('moment', 'angvel', 'ang')

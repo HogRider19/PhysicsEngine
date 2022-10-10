@@ -116,20 +116,23 @@ class CollisionPoint:
         return self._info
 
     def _cross_circle_circle(self) -> Point:
-        vector12 = Vector(self.object1.position.x - self.object2.position.x,
-                             self.object1.position.y  - self.object2.position.y)
-        vector12.normalize()
-        force_vector = vector12.clone()
-        vector12.mult(self.object1.radius)
-        cross_point = self.object1.position.displace_new_point(vector12)
+        vector12 = Vector(self.object2.position.x - self.object1.position.x,
+                             self.object2.position.y  - self.object1.position.y)
 
-        local_info = {
-            'type': 'cc',
-            'cross_point': cross_point,
-            'force_vector': force_vector,
-        }
+        if vector12.get_len() < self.object1.radius + self.object2.radius:
+            force_vector = vector12.clone()
+            vector12.normalize()
+            vector12.mult(self.object1.radius)
+            cross_point = self.object1.position.displace_new_point(vector12)
 
-        return local_info
+            local_info = {
+                'type': 'cc',
+                'cross_point': cross_point,
+                'force_vector': force_vector,
+            }
+            return local_info
+
+        return {}
 
     def _cross_circle_rect(self) -> Union[Point, None]: 
         """
@@ -213,6 +216,7 @@ class Interaction:
     
     def __init__(self, objects = []) -> None:
         self.objects = []
+        self._info = {}
         for object in objects:
             self.add_object(object)
 
@@ -221,6 +225,13 @@ class Interaction:
             self.objects.append(object)
         else:
             raise TypeError("The object must be a Circle or Rect!")
+
+    def get_info(self) -> dict:
+        """
+        Словарь _info заполняется после 
+        расчета точки соударения
+        """
+        return self._info
 
     def distribute_interactions(self) -> None:
         mamory_dict = {}
@@ -244,4 +255,6 @@ class Interaction:
         obj2.add_relative_force(force_vector, info.get('cross_point'))
         force_vector.mult(-1)
         obj1.add_relative_force(force_vector, info.get('cross_point'))
+
+        self._info = info
 
