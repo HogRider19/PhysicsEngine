@@ -234,16 +234,16 @@ class Interaction:
         return self._info
 
     def distribute_interactions(self) -> None:
-        mamory_dict = {}
+        mamory_dict = {i:[] for i in range(len(self.objects))}
         for index1, object1 in enumerate(self.objects):
             for index2, object2 in enumerate(self.objects):
                 if index1 != index2:
                     collisionPointManager = CollisionPoint(object1, object2)
                     colision_point = collisionPointManager.get_cross_point()
 
-                    if colision_point and not mamory_dict.get(index2, None) == index1:
+                    if colision_point and not index1 in mamory_dict.get(index2, []):
 
-                        mamory_dict.update({index1: index2})
+                        mamory_dict.get(index1).append(index2)
                         info = collisionPointManager.get_info()
                         self._simple_interaction(object1, object2, info)
 
