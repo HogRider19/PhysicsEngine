@@ -24,7 +24,7 @@ circle4 = Circle(20, position=Point(600, 350),
 circle5 = Circle(20, position=Point(500, 350), 
                         moment_inertia=1, mas=0.05, veloсity=Vector(2, 0))
 circle6 = Circle(20, position=Point(400, 350), 
-                        moment_inertia=1, mas=0.05, veloсity=Vector(0, -0))
+                        moment_inertia=1, mas=0.05, veloсity=Vector(2, -0))
 circle7 = Circle(20, position=Point(300, 350), 
                         moment_inertia=1, mas=0.05, veloсity=Vector(2, -0))
 circle8 = Circle(20, position=Point(200, 350), 

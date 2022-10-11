@@ -129,6 +129,7 @@ class CollisionPoint:
                 'type': 'cc',
                 'cross_point': cross_point,
                 'force_vector': force_vector,
+                'dist': vector12.get_len(),
             }
             return local_info
 
@@ -197,6 +198,7 @@ class CollisionPoint:
                 'type': 'cr',
                 'cross_point': cross_point,
                 'force_vector': force_vector,
+                'dist': d,
             }
 
             return local_info
@@ -251,7 +253,8 @@ class Interaction:
     def _simple_interaction(self, obj1, obj2, info: dict):
 
         force_vector = info.get('force_vector')
-        force_vector.mult(1/100)
+        dist = info.get('dist')
+        force_vector.mult(1/100 * dist/100)
 
         obj2.add_relative_force(force_vector, info.get('cross_point'))
         force_vector.mult(-1)
