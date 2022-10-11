@@ -25,7 +25,7 @@ simManager.set_objects(
     circle1,
 )
 
-pygameRender = PygameRender(simManager, time=2, collectInfo=True, drawinteraction=True)
+pygameRender = PygameRender(simManager, time=2, collectInfo=True, drawinteraction=False)
 pygameRender.run()
 
 info = pygameRender.get_info()

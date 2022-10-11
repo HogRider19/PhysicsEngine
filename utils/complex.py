@@ -216,7 +216,7 @@ class Interaction:
     
     def __init__(self, objects = []) -> None:
         self.objects = []
-        self._info = {}
+        self._info = []
         for object in objects:
             self.add_object(object)
 
@@ -234,6 +234,7 @@ class Interaction:
         return self._info
 
     def distribute_interactions(self) -> None:
+        self._info = []
         mamory_dict = {i:[] for i in range(len(self.objects))}
         for index1, object1 in enumerate(self.objects):
             for index2, object2 in enumerate(self.objects):
@@ -256,5 +257,5 @@ class Interaction:
         force_vector.mult(-1)
         obj1.add_relative_force(force_vector, info.get('cross_point'))
 
-        self._info = info
+        self._info.append(info)
 

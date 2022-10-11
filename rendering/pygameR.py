@@ -29,7 +29,7 @@ class PygameRender:
     BLUE = (0, 0, 255)
 
     def __init__(self, simManager: Simulation, time: float, width=1200,
-                    height=700, collectInfo=False, drawinteraction=False) -> None:
+                    height=700, collectInfo=False, drawinteraction=False, fps=50) -> None:
         self.simManager = simManager
         self.time = time
         self.width = width
@@ -37,7 +37,7 @@ class PygameRender:
         self.collectInfo = collectInfo
         self.drawinteraction = drawinteraction
         self.info = []
-        self.FPS = 60
+        self.FPS = fps
         self.is_sim = True
         self.src = None
         self.clock = None
@@ -118,10 +118,13 @@ class PygameRender:
     def _draw_interaction(self) -> None:
         interinfo = self.simManager.get_interaction_info()
 
-        if interinfo:
-            cp = interinfo.get('cross_point')
-            fv = interinfo.get('force_vector')
-            fv.mult(4)
+        for info in interinfo:
+
+            cp = info.get('cross_point')
+            fv = info.get('force_vector')
+
+            fv.normalize()
+            fv.mult(30)
             
             pg.draw.circle(self.scr, (255,20,20), 
                         (cp.x, cp.y), 10)
