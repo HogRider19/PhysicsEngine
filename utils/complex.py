@@ -125,11 +125,12 @@ class CollisionPoint:
             vector12.mult(self.object1.radius)
             cross_point = self.object1.position.displace_new_point(vector12)
 
+            r_len = self.object1.radius + self.object2.radius
             local_info = {
                 'type': 'cc',
                 'cross_point': cross_point,
                 'force_vector': force_vector,
-                'dist': vector12.get_len(),
+                'dist': r_len - force_vector.get_len(),
             }
             return local_info
 
@@ -198,7 +199,7 @@ class CollisionPoint:
                 'type': 'cr',
                 'cross_point': cross_point,
                 'force_vector': force_vector,
-                'dist': d,
+                'dist': d1 - d,
             }
 
             return local_info
@@ -254,7 +255,7 @@ class Interaction:
 
         force_vector = info.get('force_vector')
         dist = info.get('dist')
-        force_vector.mult(1/100 * dist/100)
+        force_vector.mult(1/100 * dist)
 
         obj2.add_relative_force(force_vector, info.get('cross_point'))
         force_vector.mult(-1)
