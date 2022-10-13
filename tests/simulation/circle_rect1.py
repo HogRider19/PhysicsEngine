@@ -14,9 +14,9 @@ from MathОperators.vector import Vector
 
 
 rect1 = Rect(500, 200, position=Point(700, 350), 
-                        moment_inertia=1, mas=1.1, veloсity=Vector(0,0))
+                        moment_inertia=1, mas=10.1, veloсity=Vector(0,0))
 circle1 = Circle(20, position=Point(400, 200), 
-                        moment_inertia=1, mas=0.1, veloсity=Vector(7, 0))
+                        moment_inertia=1, mas=1.1, veloсity=Vector(3, 0))
 
 space = Space(1200, 700, 0, 0.5, 0.5)
 simManager = Simulation(space)
@@ -25,7 +25,7 @@ simManager.set_objects(
     circle1,
 )
 
-pygameRender = PygameRender(simManager, time=2, collectInfo=True, drawinteraction=False)
+pygameRender = PygameRender(simManager, time=4, collectInfo=True, drawinteraction=False)
 pygameRender.run()
 
 info = pygameRender.get_info()

@@ -120,7 +120,10 @@ class CollisionPoint:
                              self.object2.position.y  - self.object1.position.y)
 
         if vector12.get_len() < self.object1.radius + self.object2.radius:
+
+            inrerior_vector = vector12.clone()
             force_vector = vector12.clone()
+            force_vector.normalize()
             vector12.normalize()
             vector12.mult(self.object1.radius)
             cross_point = self.object1.position.displace_new_point(vector12)
@@ -130,7 +133,7 @@ class CollisionPoint:
                 'type': 'cc',
                 'cross_point': cross_point,
                 'force_vector': force_vector,
-                'dist': r_len - force_vector.get_len(),
+                'inrerior_dist': 1 - (inrerior_vector.get_len()/r_len),
             }
             return local_info
 
@@ -194,12 +197,13 @@ class CollisionPoint:
                                         collision_line.point1.y-collision_line.point2.y)
             collision_vector.rotate(math.pi/2)
             force_vector = collision_vector
+            force_vector.normalize()
 
             local_info = {
                 'type': 'cr',
                 'cross_point': cross_point,
                 'force_vector': force_vector,
-                'dist': d1 - d,
+                'inrerior_dist': 1 - (d/d1),
             }
 
             return local_info
@@ -254,8 +258,8 @@ class Interaction:
     def _simple_interaction(self, obj1, obj2, info: dict):
 
         force_vector = info.get('force_vector')
-        dist = info.get('dist')
-        force_vector.mult(1/100 * dist)
+        dist = info.get('inrerior_dist')
+        force_vector.mult(100*math.tan(math.pi/2*dist))
 
         obj2.add_relative_force(force_vector, info.get('cross_point'))
         force_vector.mult(-1)

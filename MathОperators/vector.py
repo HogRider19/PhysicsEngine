@@ -21,6 +21,8 @@ class Vector:
         self.x,self.y = rx, ry
 
     def normalize(self) -> None:
+        if self.get_len() == 0:
+            return Vector(0, 0)
         len = self.get_len()
         self.x = self.x/len
         self.y = self.y/len
