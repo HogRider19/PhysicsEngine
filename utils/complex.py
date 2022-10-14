@@ -259,7 +259,9 @@ class Interaction:
 
         force_vector = info.get('force_vector')
         dist = info.get('inrerior_dist')
-        force_vector.mult(100*math.tan(math.pi/2*dist))
+        elastic = (obj1.material.elastic + obj2.material.elastic)/2 + 1
+        elastic = elastic**elastic**elastic
+        force_vector.mult(elastic*100*math.tan(math.pi/2*dist**elastic))
 
         obj2.add_relative_force(force_vector, info.get('cross_point'))
         force_vector.mult(-1)

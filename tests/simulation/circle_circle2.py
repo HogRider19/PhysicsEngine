@@ -11,16 +11,17 @@ from simulation.simulation import Simulation
 from simulation.space import Space
 from MathОperators.point import Point
 from MathОperators.vector import Vector
+from Basicobjects.material import Material
 
 
 circle1 = Circle(80, position=Point(700, 200), 
-                        moment_inertia=1, mas=0.5, veloсity=Vector(-1, 0))
+                        moment_inertia=1, mas=1.5, veloсity=Vector(-1, 0))
 circle2 = Circle(80, position=Point(500, 200), 
-                        moment_inertia=1, mas=0.5, veloсity=Vector(1, -0))
+                        moment_inertia=1, mas=1.5, veloсity=Vector(1, -0))
 circle3 = Circle(80, position=Point(700, 500), 
-                        moment_inertia=1, mas=10.5, veloсity=Vector(-1, 0))
+                        moment_inertia=1, mas=1.5, veloсity=Vector(-1, 0), material=Material(1,1))
 circle4 = Circle(80, position=Point(500, 500), 
-                        moment_inertia=1, mas=10.5, veloсity=Vector(1, -0))
+                        moment_inertia=1, mas=1.5, veloсity=Vector(1, -0), material=Material(1,1))
 
 space = Space(1200, 700, 0, 0.0, 1.5)
 simManager = Simulation(space)
@@ -31,7 +32,7 @@ simManager.set_objects(
     circle4,
 )
 
-pygameRender = PygameRender(simManager, time=3, collectInfo=True, drawinteraction=True)
+pygameRender = PygameRender(simManager, time=4, collectInfo=True, drawinteraction=True)
 pygameRender.run()
 
 info = pygameRender.get_info()
