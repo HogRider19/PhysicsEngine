@@ -11,7 +11,7 @@ from Objects.circle import Circle
 from Objects.rect import Rect
 from utils.base import MathUtils, RayCast
 from tests.utils import operations_per_second, ReportManager
-from utils.complex import DistanceBetweenObjects, CollisionPoint
+from utils.complex import DistanceBetweenObjects, CollisionPoint, Interaction
 
 
 
@@ -95,6 +95,26 @@ def cross_point_rect_circle_test(values):
     ).get_cross_point()
 
 
+@operations_per_second
+def rect_circle_interaction_test(values):
+    interaction = Interaction([
+        Rect(values(1, 100), values(1, 100), position=Point(values(),values())),
+        Circle(values(1, 40), position=Point(values(),values())),
+    ])
+    interaction.distribute_interactions()
+    return interaction.get_info()
+
+@operations_per_second
+def circle_circle_interaction_test(values):
+    interaction = Interaction([
+        Circle(values(1, 40), position=Point(values(),values())),
+        Circle(values(1, 40), position=Point(values(),values())),
+    ])
+    interaction.distribute_interactions()
+    return interaction.get_info()
+
+
+
 def report():
     manager = ReportManager()
     
@@ -110,6 +130,8 @@ def report():
         distance_rect_to_rect_test,
         cross_point_circle_circle_test,
         cross_point_rect_circle_test,
+        rect_circle_interaction_test,
+        circle_circle_interaction_test,
     )
 
     return manager.get_report()

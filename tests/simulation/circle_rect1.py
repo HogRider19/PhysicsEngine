@@ -11,12 +11,13 @@ from simulation.simulation import Simulation
 from simulation.space import Space
 from MathОperators.point import Point
 from MathОperators.vector import Vector
+from Basicobjects.material import Material
 
 
 rect1 = Rect(500, 200, position=Point(700, 350), 
                         moment_inertia=1, mas=10.1, veloсity=Vector(0,0))
 circle1 = Circle(20, position=Point(400, 200), 
-                        moment_inertia=1, mas=1.1, veloсity=Vector(3, 0))
+                        moment_inertia=1, mas=1.1, veloсity=Vector(3, 0), material=Material(1,1))
 
 space = Space(1200, 700, 0, 0.5, 0.5)
 simManager = Simulation(space)
