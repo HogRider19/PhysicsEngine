@@ -16,6 +16,18 @@ class Rect(PhysicsObject):
 
     def get_component_lines(self) -> list:
         """Возвращает список составных линий"""
+
+        p1,p2,p3,p4 = self.get_component_points()
+
+        line1 = Line(p1, p2)
+        line2 = Line(p2, p3)
+        line3 = Line(p3, p4)
+        line4 = Line(p4, p1)
+
+        return [line1, line2, line3, line4]
+
+    def get_component_points(self) -> Line:
+        """Возваращает список составных точек"""
         rotateManager = CoordinateSystemRotation(ang = self.ang)
         center_r = rotateManager.get_transformed_point(self.position)
 
@@ -29,9 +41,4 @@ class Rect(PhysicsObject):
         p3 = rotateManager.get_starting_point(p3_r)
         p4 = rotateManager.get_starting_point(p4_r)
 
-        line1 = Line(p1, p2)
-        line2 = Line(p2, p3)
-        line3 = Line(p3, p4)
-        line4 = Line(p4, p1)
-
-        return [line1, line2, line3, line4]
+        return [p1, p2, p3, p4]

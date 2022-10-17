@@ -82,7 +82,6 @@ class CollisionPoint:
 
     def get_cross_point(self) -> Point:
         self._info = {}
-        cross_point = None
 
         if isinstance(self.object1, Circle) and  isinstance(self.object2, Circle):
             local_info = self._cross_circle_circle()
@@ -139,7 +138,7 @@ class CollisionPoint:
 
         return {}
 
-    def _cross_circle_rect(self) -> Union[Point, None]: 
+    def _cross_circle_rect(self, def_circle=None, def_rect=None) -> Union[Point, None]: 
         """
         1) Получаем точки rect
         2) Поворот системы координат
@@ -159,6 +158,9 @@ class CollisionPoint:
         """
         rect = self.object2
         circle = self.object1
+        if def_circle and def_rect:
+            circle = def_circle
+            rect = def_rect
 
         lines = rect.get_component_lines()
 
@@ -173,8 +175,6 @@ class CollisionPoint:
 
         if dx == 0:
             dx = 0.001
-        alpha = math.atan(dy/dx)
-        alpha1 = math.atan(rect.height/rect.width)
 
         lineNum = 0
 
@@ -212,7 +212,26 @@ class CollisionPoint:
 
 
     def _cross_rect_rect(self) -> Point: 
-        return None
+        
+        rect1 = self.object1
+        rect2 = self.object2
+
+        points1 = rect1.get_component_points()
+        points2 = rect2.get_component_points()
+
+        circle_rad = min([rect1.width, rect1.height])/10
+        for index, point in enumerate(points1):
+            
+            circle = Circle(circle_rad, position=point)
+            
+            info = self._cross_circle_rect(circle, rect2)
+
+            if info:
+                return info
+            
+        
+        return {}
+
 
     def _set_info(self, **kwargs) -> None:
         self._info.update(kwargs)
