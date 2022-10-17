@@ -14,10 +14,10 @@ from MathОperators.vector import Vector
 from Basicobjects.material import Material
 
 
-rect1 = Rect(500, 200, position=Point(700, 350), 
-                        moment_inertia=1, mas=10.1, veloсity=Vector(0,0))
-rect2 = Rect(400, 100, position=Point(500, 400), 
-                        moment_inertia=1, mas=1.1, veloсity=Vector(0, 0), ang_veloсity=0.01)
+rect1 = Rect(500, 200, position=Point(900, 350), 
+                        moment_inertia=1, mas=20.1, veloсity=Vector(0,0))
+rect2 = Rect(400, 100, position=Point(500, 500), 
+                        moment_inertia=1, mas=20.1, veloсity=Vector(2, 0), ang_veloсity=0, ang=3.14/2)
 
 space = Space(1200, 700, 0, 0.5, 0.5)
 simManager = Simulation(space)
@@ -26,11 +26,11 @@ simManager.set_objects(
     rect2,
 )
 
-pygameRender = PygameRender(simManager, time=4, collectInfo=True, drawinteraction=False)
+pygameRender = PygameRender(simManager, time=3, collectInfo=True, drawinteraction=True)
 pygameRender.run()
 
 info = pygameRender.get_info()
 
 ploter = PloterInfo(info, num_obgect = (0,1), drawspace=True)
-ploter.show()
-#ploter.show_once('moment', 'ang')
+#ploter.show()
+ploter.show_once('moment', 'angvel')

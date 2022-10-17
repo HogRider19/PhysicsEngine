@@ -219,17 +219,27 @@ class CollisionPoint:
         points1 = rect1.get_component_points()
         points2 = rect2.get_component_points()
 
+        local_info = {
+            'type': 'rr',
+            'cross_point': True,
+            'multiple_interaction': True,
+            'multiple_interaction_list': []
+        }
+
         circle_rad = min([rect1.width, rect1.height])/10
         for index, point in enumerate(points1):
             
             circle = Circle(circle_rad, position=point)
             
-            info = self._cross_circle_rect(circle, rect2)
+            info_once = self._cross_circle_rect(circle, rect2)
 
-            if info:
-                return info
-            
+            if info_once:
+                info_once['force_vector'].mult(-1)
+                local_info['multiple_interaction_list'].append(info_once)
         
+        if local_info['multiple_interaction_list']:
+            return local_info
+
         return {}
 
 
@@ -276,15 +286,24 @@ class Interaction:
 
     def _simple_interaction(self, obj1, obj2, info: dict):
 
-        force_vector = info.get('force_vector')
-        dist = info.get('inrerior_dist')
-        elastic = (obj1.material.elastic + obj2.material.elastic)/2 + 1
-        elastic = elastic**elastic**elastic
-        force_vector.mult(elastic*100*math.tan(math.pi/2*dist**elastic))
+        multiple_interaction = info.get('multiple_interaction', False)
 
-        obj2.add_relative_force(force_vector, info.get('cross_point'))
-        force_vector.mult(-1)
-        obj1.add_relative_force(force_vector, info.get('cross_point'))
+        if multiple_interaction:
+            multiple_interaction_list = info.get('multiple_interaction_list', [])
+        else:
+            multiple_interaction_list = [info]
 
-        self._info.append(info)
+        for interaction in multiple_interaction_list:
+            force_vector = interaction.get('force_vector')
+            dist = interaction.get('inrerior_dist')
+            elastic = (obj1.material.elastic + obj2.material.elastic)/2 + 1
+            elastic = elastic**elastic**elastic
+            force_vector.mult(elastic*100*math.tan(math.pi/2*dist**elastic))
+
+            obj2.add_relative_force(force_vector, interaction.get('cross_point'))
+            force_vector.mult(-1)
+            obj1.add_relative_force(force_vector, interaction.get('cross_point'))
+
+            self._info.append(interaction)
+
 
