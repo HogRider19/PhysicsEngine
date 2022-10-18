@@ -1,3 +1,4 @@
+import math
 from .vector import Vector
 
 
@@ -16,3 +17,9 @@ class Point:
             x = self.x + vec.x,
             y = self.y + vec.y
         )
+
+    def get_displace(self, point) -> float:
+        return math.sqrt((self.x - point.x)**2 + (self.y - point.y)**2)
+
+    def __eq__(self, other) -> bool:
+        return abs(self.x - other.x) <= 0.001 and abs(self.y - other.y) <= 0.001

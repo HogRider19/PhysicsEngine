@@ -41,6 +41,7 @@ class PygameRender:
         self.is_sim = True
         self.src = None
         self.clock = None
+        self.post_fun = None
 
         self._prepare()
 
@@ -66,11 +67,17 @@ class PygameRender:
             if self.collectInfo:
                 self._collect_info()
 
+            if self.post_action:
+                self.post_action(self)
+
             pg.display.flip()
             self.clock.tick(self.FPS)
 
     def get_info(self) -> list:
         return self.info
+
+    def set_post_action(self, post_action):
+        self.post_action = post_action
 
     def _prepare(self) -> None:
         pg.init()
