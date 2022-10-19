@@ -1,7 +1,8 @@
+import math
 import os,sys
 sys.path.append(os.getcwd())
 
-from utils.base import RayCast
+from utils.base import RayCast, CoordinateSystemRotation, MathUtils
 from MathОperators.point import Point
 from MathОperators.line import Line
 from MathОperators.ray import Ray
@@ -19,3 +20,24 @@ import pytest
 def test_ray_cast(ray, line, cross_point):
     cp = RayCast(ray, line).get_cross_point()
     assert cp == cross_point 
+
+
+@pytest.mark.parametrize('ang, point, displace, exepted_point',[
+                    (math.pi/2, Point(0, 1), Vector(1,0), Point(0,2)),
+                    (math.pi/4, Point(1, 1), Vector(math.sqrt(2),0), Point(2,2)),
+                    (math.pi, Point(0, 0), Vector(5,0), Point(-5,0)),])
+def test_coordinate_system_rotation_point(ang, point, displace, exepted_point):
+    rotateManager = CoordinateSystemRotation(ang)
+    point_r = rotateManager.get_transformed_point(point)
+    point_r.displace(displace)
+    res_point = rotateManager.get_starting_point(point_r)
+    assert res_point == exepted_point
+
+
+@pytest.mark.parametrize('line, cff', [
+                    (Line(Point(1,1),Point(4, 12)), (11, -3,-8)),
+                    (Line(Point(-8,1),Point(15,0)), (-1,-23,15)),
+                    (Line(Point(0,0),Point(1,0)), (0,-1,0))])
+def test_line_coefficients(line, cff):
+    res_cff = MathUtils.line_coefficients(line)
+    assert cff == res_cff

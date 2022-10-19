@@ -67,9 +67,6 @@ class PygameRender:
             if self.collectInfo:
                 self._collect_info()
 
-            if self.post_action:
-                self.post_action(self)
-
             pg.display.flip()
             self.clock.tick(self.FPS)
 
