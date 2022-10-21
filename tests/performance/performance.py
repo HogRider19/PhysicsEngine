@@ -114,7 +114,6 @@ def circle_circle_interaction_test(values):
     return interaction.get_info()
 
 
-
 def report():
     manager = ReportManager()
     

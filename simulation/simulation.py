@@ -7,6 +7,7 @@ from MathОperators.vector import Vector
 from utils.complex import CollisionPoint, Interaction
 from typing import Union
 
+
 class Simulation:
 
     def __init__(self, space: Space) -> None:

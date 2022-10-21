@@ -5,13 +5,11 @@ from MathОperators.point import Point
 from MathОperators.vector import Vector
 from MathОperators.line import Line
 from utils.base import MathUtils, RayCast
-from tests.performance import get_report
 from utils.complex import DistanceBetweenObjects, CollisionPoint
 from Objects.circle import Circle
 from Objects.rect import Rect
 import matplotlib.pyplot as plt
 import time
-
 
 
 first_time = time.time()
@@ -27,7 +25,7 @@ while time.time() - first_time < 0.027:
 
     circle.position.x = math.sin(a)*45 + rect.position.x
     circle.position.y = math.cos(a)*45 + rect.position.y
-    a+=0.05
+    a += 0.05
     
     cp = CollisionPoint(rect, circle).get_cross_point()
 
@@ -39,10 +37,8 @@ while time.time() - first_time < 0.027:
         result2.append(0)
 
 
-#plt.plot(result1)
-#plt.plot(result2)
-plt.plot(result1,result2)
+# plt.plot(result1)
+# plt.plot(result2)
+plt.plot(result1, result2)
 plt.grid(True)
 plt.show()
-
-

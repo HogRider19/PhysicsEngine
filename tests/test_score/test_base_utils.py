@@ -32,7 +32,7 @@ def test_coordinate_system_rotation_point(ang, point, displace, exepted_point):
     point_r.displace(displace)
     res_point = rotateManager.get_starting_point(point_r)
     assert res_point == exepted_point
-
+ 
 
 @pytest.mark.parametrize('line, cff', [
                     (Line(Point(1,1),Point(4, 12)), (11, -3,-8)),
@@ -41,3 +41,16 @@ def test_coordinate_system_rotation_point(ang, point, displace, exepted_point):
 def test_line_coefficients(line, cff):
     res_cff = MathUtils.line_coefficients(line)
     assert cff == res_cff
+
+
+@pytest.mark.parametrize('point, line, ls, dist', [
+                    (Point(10,-2), Line(Point(1,2),Point(3, -8)), False, 8.04),
+                    (Point(5,-8), Line(Point(0,0),Point(0, 10)), False, 5),
+                    (Point(0, 0), Line(Point(1,0),Point(2, 0)), True, 1),
+                    (Point(0, 0), Line(Point(1,0),Point(2, 0)), False, 0),])
+def test_distance_point_to_line(point, line, ls, dist):
+    d = MathUtils.distance_point_to_line(point, line, ls)
+    if d is None or dist is None:
+        assert dist == d 
+    else: 
+        assert abs(dist - d) < 0.01
