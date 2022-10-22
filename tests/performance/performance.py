@@ -123,27 +123,24 @@ def rect_rect_interaction_test(values):
     return interaction.get_info()
 
 
-def report():
-    manager = ReportManager()
-    
-    manager.register(
-        line_coefficients_test,
-        ray_cast_to_line_test,
-        distance_point_to_line_test,
-        ray_to_line_test,
-        distance_circle_to_circle_test,
-        rect_component_lines,
-        distance_circle_to_rect_test,
-        distance_line_to_line_test,
-        distance_rect_to_rect_test,
-        cross_point_circle_circle_test,
-        cross_point_rect_circle_test,
-        rect_circle_interaction_test,
-        circle_circle_interaction_test,
-        rect_rect_interaction_test,
-    )
+manager = ReportManager()
 
-    return manager.get_report()
+manager.register(
+    line_coefficients_test,
+    ray_cast_to_line_test,
+    distance_point_to_line_test,
+    ray_to_line_test,
+    distance_circle_to_circle_test,
+    rect_component_lines,
+    distance_circle_to_rect_test,
+    distance_line_to_line_test,
+    distance_rect_to_rect_test,
+    cross_point_circle_circle_test,
+    cross_point_rect_circle_test,
+    rect_circle_interaction_test,
+    circle_circle_interaction_test,
+    rect_rect_interaction_test,
+)
 
+manager.show_report()
 
-print(report())

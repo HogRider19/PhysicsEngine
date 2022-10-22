@@ -1,4 +1,5 @@
 from functools import wraps
+from progress.bar import ChargingBar
 import random
 import time
 
@@ -43,18 +44,22 @@ class ReportManager:
     def register(self, *tests: any) -> None:
         self.tests = tests
 
-    def get_report(self) -> str:
+    def show_report(self) -> str:
         report = []
+        bar = ChargingBar('Modeling', max=len(self.tests))
         for test in self.tests:
             report.append([test(), test.__name__])
+            bar.next()
+
+        bar.finish()
 
         report.sort(reverse=True)
 
         report_str = '\n'
         for data in report:
             report_str += f'{data[1]}{"."*(60-len(data[1]))}{data[0]}\n'
-
-        return report_str
+            
+        print(report_str)
 
 
 
