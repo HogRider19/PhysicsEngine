@@ -10,8 +10,8 @@ class Line:
         self.point2 = point2
 
     def get_ang(self):
-        v = Vector(self.point1.x - self.point2.x, self.point1.y - self.point2.y)
-        return self.v.get_ang()
+        vec = Vector(self.point1.x - self.point2.x, self.point1.y - self.point2.y)
+        return vec.get_ang()
 
     def get_guiding_vec(self):
         return Vector(self.point1.x - self.point2.x, self.point1.y - self.point2.y)

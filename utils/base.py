@@ -124,10 +124,20 @@ class MathUtils:
         dist = abs(a*point.x + b*point.y + c) / math.sqrt(a**2 + b**2)
 
         if linesegment:
+            line_ang = line.get_ang()
+            rotateManager = CoordinateSystemRotation(line_ang)
+
+            line_r = rotateManager.get_transformed_line(line)
+            point_r = rotateManager.get_transformed_point(point)
+
             dist_point1 = MathUtils.distance_point_to_point(point, line.point1)
             dist_point2 = MathUtils.distance_point_to_point(point, line.point2)
 
-            return min([dist_point1, dist_point2, dist])
+            max_y = max(line_r.point1.y, line_r.point2.y)
+            min_y = min(line_r.point1.y, line_r.point2.y)
+
+            if point_r.y > max_y or point_r.y < min_y:
+                return min(dist_point1, dist_point2)
 
         return dist
 
