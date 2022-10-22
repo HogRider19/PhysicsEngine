@@ -113,6 +113,15 @@ def circle_circle_interaction_test(values):
     interaction.distribute_interactions()
     return interaction.get_info()
 
+@operations_per_second
+def rect_rect_interaction_test(values):
+    interaction = Interaction([
+        Rect(values(1, 100), values(1, 100), position=Point(values(),values())),
+        Rect(values(1, 100), values(1, 100), position=Point(values(),values())),
+    ])
+    interaction.distribute_interactions()
+    return interaction.get_info()
+
 
 def report():
     manager = ReportManager()
@@ -131,6 +140,7 @@ def report():
         cross_point_rect_circle_test,
         rect_circle_interaction_test,
         circle_circle_interaction_test,
+        rect_rect_interaction_test,
     )
 
     return manager.get_report()
