@@ -54,3 +54,12 @@ def test_distance_point_to_line(point, line, ls, dist):
         assert dist == d 
     else: 
         assert abs(dist - d) < 0.01
+
+@pytest.mark.parametrize('line1, line2, dist',[
+                    (Line(Point(-1,-1),Point(1, 1)),Line(Point(-1,1),Point(1, -1)), 0),
+                    (Line(Point(0,0),Point(0, 1)),Line(Point(1,0),Point(1, 1)), 1),
+                    (Line(Point(0,1),Point(1, 0)),Line(Point(1,0),Point(2, 1)), 0),
+                    (Line(Point(0,1),Point(1, 0)),Line(Point(2,0),Point(3, 1)), 1),])
+def test_distance_line_to_line(line1, line2, dist):
+    d = MathUtils.distance_line_to_line(line1, line2)
+    assert dist == d
