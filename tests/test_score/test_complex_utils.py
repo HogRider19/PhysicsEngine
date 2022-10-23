@@ -5,6 +5,7 @@ from utils.complex import DistanceBetweenObjects
 from Objects.circle import Circle
 from Objects.rect import Rect
 from MathОperators.point import Point
+import math
 import pytest
 
 
@@ -20,7 +21,9 @@ def test_distance_circle_circle(circle1, circle2, dist):
 
 @pytest.mark.parametrize('circle, rect, dist', [
                             (Circle(1, position=Point(0,0)),Rect(1,1,position=Point(0,0)),0),
-                            (Circle(5, position=Point(0,0)),Rect(10,10,position=Point(50,0)),40),])
+                            (Circle(5, position=Point(0,0)),Rect(10,10,position=Point(50,0)),40),
+                            (Circle(1, position=Point(0,0)),Rect(2,2,position=Point(10,10), ang=math.sqrt(math.pi/4)),12.1421),
+                            (Circle(2, position=Point(0,0)),Rect(2,2,position=Point(10,10), ang=math.sqrt(5*math.pi/4)),11.1421),])
 def test_distance_circle_rect(circle, rect, dist):
     d = DistanceBetweenObjects(circle, rect).get_distance()
     assert abs(dist - d) < 0.01
