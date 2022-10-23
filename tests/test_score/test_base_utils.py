@@ -46,8 +46,9 @@ def test_line_coefficients(line, cff):
 @pytest.mark.parametrize('point, line, ls, dist', [
                     (Point(10,-2), Line(Point(1,2),Point(3, -8)), False, 8.04),
                     (Point(5,-8), Line(Point(0,0),Point(0, 10)), False, 5),
+                    (Point(0, 0), Line(Point(1,0),Point(2, 0)), False, 0),
                     (Point(0, 0), Line(Point(1,0),Point(2, 0)), True, 1),
-                    (Point(0, 0), Line(Point(1,0),Point(2, 0)), False, 0),])
+                    (Point(0, 1), Line(Point(0,0),Point(1, 1)), True, 0.7071),])
 def test_distance_point_to_line(point, line, ls, dist):
     d = MathUtils.distance_point_to_line(point, line, ls)
     if d is None or dist is None:

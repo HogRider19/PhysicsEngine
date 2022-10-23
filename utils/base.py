@@ -133,10 +133,10 @@ class MathUtils:
             dist_point1 = MathUtils.distance_point_to_point(point, line.point1)
             dist_point2 = MathUtils.distance_point_to_point(point, line.point2)
 
-            max_y = max(line_r.point1.y, line_r.point2.y)
-            min_y = min(line_r.point1.y, line_r.point2.y)
+            max_x = max(line_r.point1.x, line_r.point2.x)
+            min_x = min(line_r.point1.x, line_r.point2.x)
 
-            if point_r.y > max_y or point_r.y < min_y:
+            if point_r.x > max_x or point_r.x < min_x:
                 return min(dist_point1, dist_point2)
 
         return dist
