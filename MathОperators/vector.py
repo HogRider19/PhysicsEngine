@@ -13,6 +13,13 @@ class Vector:
     def __sub__(self, other):
         return Vector(self.x-other.x,self.y-other.y)
 
+    def __eq__(self, other) -> bool:
+        a = Vector(self.x, self.y)
+        b = Vector(other.x, other.y)
+        a.normalize()
+        b.normalize()
+        return abs(a.x - b.x) <= 0.001 and abs(a.y - b.y) <= 0.001
+
     def rotate(self, alpha: float) -> None:
         cs = math.cos(alpha)
         sn = math.sin(alpha)    

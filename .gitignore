@@ -16,6 +16,8 @@ __pycache__/
 .pyc
 *.pyc
 
+.mypy_cache
+
 db_scheme.jpg
 
 !*media/.gitkeep

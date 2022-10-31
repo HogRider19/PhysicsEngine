@@ -25,7 +25,7 @@ def test_distance_circle_circle(circle1, circle2, dist):
                             (Circle(1, position=Point(10,10)),Rect(2,2,position=Point(0,0), ang=math.sqrt(math.pi/4)),12.1421),
                             (Circle(1, position=Point(0,0)),Rect(2,2,position=Point(10,10), ang=math.sqrt(math.pi/4)),12.1421),
                             ])
-def test_distance_circle_rect(circle, rect, dist):
+def test_distance_circle_rect(circle, rect, dist): 
     d = DistanceBetweenObjects(circle, rect).get_distance()
     assert abs(dist - d) < 0.1
 

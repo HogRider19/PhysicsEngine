@@ -6,6 +6,7 @@ from Objects.circle import Circle
 from Objects.rect import Rect
 from MathОperators.point import Point
 from MathОperators.line import Line
+from MathОperators.vector import Vector
 import math
 import pytest
 
@@ -31,3 +32,13 @@ def test_component_lines(rect, lines):
     ls = rect.get_component_lines()
     for index, line in enumerate(ls):
         assert line.point1 == lines[index].point1 and line.point2 == lines[index].point2
+
+
+@pytest.mark.parametrize('vec, ang, res_vec', [
+                                (Vector(1,0),math.pi,Vector(-1,0)),
+                                (Vector(1,0),math.pi/2,Vector(0,1)),
+                                (Vector(1,0),math.pi/4,Vector(1,1)),])
+def test_vector_rotate(vec, ang, res_vec):
+    vec.rotate(ang)
+    assert vec == res_vec
+
