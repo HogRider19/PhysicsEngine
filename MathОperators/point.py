@@ -23,3 +23,6 @@ class Point:
 
     def __eq__(self, other) -> bool:
         return abs(self.x - other.x) <= 0.001 and abs(self.y - other.y) <= 0.001
+
+    def __str__(self) -> str:
+        return f"<Point (x: {self.x}, y:{self.y})>"

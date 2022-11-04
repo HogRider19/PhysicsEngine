@@ -33,7 +33,6 @@ def test_component_lines(rect, lines):
     for index, line in enumerate(ls):
         assert line.point1 == lines[index].point1 and line.point2 == lines[index].point2
 
-
 @pytest.mark.parametrize('vec, ang, res_vec', [
                                 (Vector(1,0),math.pi,Vector(-1,0)),
                                 (Vector(1,0),math.pi/2,Vector(0,1)),

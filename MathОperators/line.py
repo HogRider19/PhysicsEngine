@@ -21,3 +21,6 @@ class Line:
 
     def get_len(self):
         return math.sqrt((self.point1.x-self.point2.x)**2 + (self.point1.y-self.point2.y)**2)
+
+    def __str__(self) -> str:
+        return f"<Line({self.point1}, {self.point2})>"

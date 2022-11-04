@@ -80,8 +80,7 @@ class CollisionPoint:
         self.object2 = object2
         self._info = {}
 
-    def get_cross_point(self) -> Point:
-        self._info = {}
+    def calculate(self) -> None:
 
         if isinstance(self.object1, Circle) and  isinstance(self.object2, Circle):
             local_info = self._cross_circle_circle()
@@ -102,10 +101,7 @@ class CollisionPoint:
         else:
             raise ValueError("Invalid object")
 
-        
         self._info = local_info
-
-        return self._info.get('cross_point', None)
 
     def get_info(self) -> dict:
         """
@@ -114,11 +110,18 @@ class CollisionPoint:
         """
         return self._info
 
+    def get_cross_point(self, update: bool=True) -> Point:
+        
+        if update:
+            self.calculate()
+
+        return self._info.get('cross_point')
+
     def _cross_circle_circle(self) -> Point:
         vector12 = Vector(self.object2.position.x - self.object1.position.x,
                              self.object2.position.y  - self.object1.position.y)
 
-        if vector12.get_len() < self.object1.radius + self.object2.radius:
+        if vector12.get_len() <= self.object1.radius + self.object2.radius:
 
             inrerior_vector = vector12.clone()
             force_vector = vector12.clone()
@@ -305,5 +308,6 @@ class Interaction:
             obj1.add_relative_force(force_vector, interaction.get('cross_point'))
 
             self._info.append(interaction)
+
 
 

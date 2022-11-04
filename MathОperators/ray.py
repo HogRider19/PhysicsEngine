@@ -16,3 +16,6 @@ class Ray:
 
     def displace(self, vec: Vector) -> None:
         self.point.displace(vec)
+
+    def __str__(self) -> str:
+        return f"<Ray({self.point}, {self.vector})>"

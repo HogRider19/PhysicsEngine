@@ -1,5 +1,6 @@
 import math
 from typing import Union
+from typing import Tuple
 from MathОperators.point import Point
 from MathОperators.line import Line
 from MathОperators.ray import Ray
@@ -112,11 +113,11 @@ class CoordinateSystemRotation:
 class MathUtils:
 
     @staticmethod
-    def line_coefficients(line: Line) -> float:
+    def line_coefficients(line: Line) -> Tuple[float, float, float]:
         a = line.point2.y - line.point1.y
         b = line.point1.x - line.point2.x
         c = -line.point1.x  * line.point2.y + line.point1.y * line.point2.x
-        return a, b, c
+        return (a, b, c)
 
     @staticmethod
     def distance_point_to_line(point: Point, line: Line, linesegment = True) -> float:

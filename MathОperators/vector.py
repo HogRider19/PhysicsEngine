@@ -19,6 +19,9 @@ class Vector:
         a.normalize()
         b.normalize()
         return abs(a.x - b.x) <= 0.001 and abs(a.y - b.y) <= 0.001
+    
+    def __str__(self) -> str:
+        return f"<Vector(x: {self.x}, y:{self.y})>"
 
     def rotate(self, alpha: float) -> None:
         cs = math.cos(alpha)
