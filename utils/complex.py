@@ -73,7 +73,7 @@ class DistanceBetweenObjects:
 
 
 
-class CollisionPoint:
+class Collision:
     
     def __init__(self, object1: Union[Rect, Circle], object2: Union[Rect, Circle]) -> None:
         self.object1 = object1
@@ -278,13 +278,13 @@ class Interaction:
         for index1, object1 in enumerate(self.objects):
             for index2, object2 in enumerate(self.objects):
                 if index1 != index2:
-                    collisionPointManager = CollisionPoint(object1, object2)
-                    colision_point = collisionPointManager.get_cross_point()
+                    CollisionManager = Collision(object1, object2)
+                    colision_point = CollisionManager.get_cross_point()
 
                     if colision_point and not index1 in mamory_dict.get(index2, []):
 
                         mamory_dict.get(index1).append(index2)
-                        info = collisionPointManager.get_info()
+                        info = CollisionManager.get_info()
                         self._simple_interaction(object1, object2, info)
 
     def _simple_interaction(self, obj1, obj2, info: dict):

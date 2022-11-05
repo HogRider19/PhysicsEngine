@@ -5,7 +5,7 @@ from MathОperators.point import Point
 from MathОperators.vector import Vector
 from MathОperators.line import Line
 from utils.base import MathUtils, RayCast
-from utils.complex import DistanceBetweenObjects, CollisionPoint
+from utils.complex import DistanceBetweenObjects, Collision
 from Objects.circle import Circle
 from Objects.rect import Rect
 import matplotlib.pyplot as plt

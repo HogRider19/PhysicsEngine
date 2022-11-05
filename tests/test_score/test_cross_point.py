@@ -1,7 +1,7 @@
 import os,sys
 sys.path.append(os.getcwd())
 
-from utils.complex import CollisionPoint
+from utils.complex import Collision
 from Objects.circle import Circle
 from Objects.rect import Rect
 from MathОperators.point import Point
@@ -21,7 +21,7 @@ def P(x, y):
                                         (C(0, 0, 1), C(2, 0, 1), P(1, 0)),
                                         ])
 def test_collision_circle_circle(circle1, circle2, cross_point):
-    collisionManager = CollisionPoint(circle1, circle2)
+    collisionManager = Collision(circle1, circle2)
     collisionManager.calculate()
     collisionInfo = collisionManager.get_info()
     assert collisionInfo.get('cross_point') == cross_point

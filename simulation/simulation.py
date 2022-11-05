@@ -4,7 +4,7 @@ from simulation.space import Space
 from MathОperators.line import Line
 from MathОperators.point import Point
 from MathОperators.vector import Vector
-from utils.complex import CollisionPoint, Interaction
+from utils.complex import Collision, Interaction
 from typing import Union
 
 
