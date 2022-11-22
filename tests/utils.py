@@ -2,6 +2,7 @@ from functools import wraps
 from progress.bar import ChargingBar
 import random
 import time
+import datetime
 
 
 def operations_per_second(inner_fun):
@@ -37,8 +38,9 @@ class ValueGenerator:
 
 class ReportManager:
 
-    def __init__(self) -> None:
+    def __init__(self, logger=None) -> None:
         self.tests = []
+        self._logger = logger
 
     def register(self, *tests: any) -> None:
         self.tests = tests
@@ -54,11 +56,17 @@ class ReportManager:
 
         report.sort(reverse=True)
 
+        if self._logger is not None:
+            self._logger.info('\ndate: %s\n', datetime.datetime.now())
+
         report_str = '\n'
         for data in report:
             report_str += f'{data[1]}{"."*(65-len(data[1]))}{data[0]}\n'
+            if self._logger is not None:
+                self._logger.info(f'{data[1]}{"."*(65-len(data[1]))}{data[0]}')
             
-        print(report_str)
+        if self._logger is None:
+            print(report_str)
 
 
 

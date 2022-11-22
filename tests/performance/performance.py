@@ -12,7 +12,12 @@ from Objects.rect import Rect
 from utils.base import MathUtils, RayCast
 from tests.utils import operations_per_second, ReportManager
 from utils.complex import DistanceBetweenObjects, Collision, Interaction
+import logging
+import logging.config
 
+
+logging.config.fileConfig('logs/logging.conf')
+logger = logging.getLogger('performance')
 
 
 @operations_per_second
@@ -123,7 +128,7 @@ def rect_rect_interaction_test(values):
     return interaction.get_info()
 
 
-manager = ReportManager()
+manager = ReportManager(logger)
 
 manager.register(
     line_coefficients_test,
